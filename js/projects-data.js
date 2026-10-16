@@ -40,7 +40,7 @@ window.SITE_PROJECTS = [
   {
     id: 'book_of_ocean',
     title: '海之書 地景公共藝術',
-    images: 5, cover: 2,
+    images: 10, cover: 1,
     categories: ['藝術', '空間/展覽'],
     tags: ['公共藝術', '空間裝置', '插畫'],
     summary: '以巨型繪本為概念的地景藝術，書頁翻開的瞬間，臺灣白海豚躍然而出。',
