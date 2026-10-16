@@ -315,7 +315,7 @@ function initDetail() {
   }
   for (var n = 1; n <= p.images; n++) {
     // 封面已在最上方，下方略過；但有圖說的封面要留著，圖說才不會不見。只有一張圖的專案（網頁長圖）也要完整呈現
-    if (n === p.cover && p.images > 1 && !caps[n] && !heads[n]) continue;
+    if (n === p.cover && p.images > 1 && !caps[n] && !heads[n] && !p.keepCover) continue;   // keepCover: true 時封面也留在下方圖片列表
     imgs += '<figure class="detail-figure reveal' + (heads[n] ? ' has-heading' : '') + '">' +
       (heads[n] ? '<h3 class="detail-heading">' + esc(heads[n]) + '</h3>' : '') +
       '<button class="zoomable" type="button" aria-label="放大檢視第 ' + n + ' 張圖">' +
