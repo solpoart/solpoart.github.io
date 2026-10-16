@@ -50,11 +50,11 @@ window.SITE_PROJECTS = [
       '大海是獨一無二的繪本，時而描繪出深邃的藍洋、迷人的碧浪、溫柔的粉霞，\n每一次望向海洋時，都能閱讀到不同的故事與景色。\n一起翻開由將軍漁港出發的書扉，\n看見臺灣白海豚、黑面琵鷺與小章魚，\n共同閱讀豐富而美麗的生命奇蹟。',
       'Painted with deep blue water, turquoise waves, and clouds with pink hues,\nthe Ocean is the most unique picture book with stories and scenes that vary every time we read it.\nStart the journey from Jiangjun Fishing Harbor, exploring Taiwanese humpback dolphin,\nblack-faced spoonbill, baby octopus, and more wonders of life.',
       '特別感謝 走入森海有限公司',
-      '『海之書』：以光影交織的藝術，守護海洋保育精神',
+      '「海之書」：以光影交織的藝術，守護海洋保育精神',
       '在「臺南400」之際，藝術家徐嘉晨設計生態為主題的「海之書」地景藝術品，\n將臺南的將軍漁港的夕照美景，融入海洋生態的蓬勃氣息，\n由走入森海有限公司協助設置完成。',
       '「海之書」，以巨型繪本為概念，模擬書頁翻開的一瞬間，\n臺灣西岸重要保育動物— 白海豚躍然而出的模樣，\n書頁中穿插濕地的黑面琵鷺，與藏匿於珊瑚礁的澎湖小章魚「土婆」，\n旅客能發揮觀察力來尋找這些角色，增加對海洋生態的認識。',
       '融入地景的設計，可隨著夕陽或是晨曦產生不同的光輝變化，\n每當晚霞降臨，餘暉自書頁間穿透而出，將這片港岸變身充滿詩意的場景，透過鏤空的書頁，欣賞不同時節的海洋繪本。',
-      '『海之書』以光與海洋為題材，成為將軍海岸線的點睛之筆，於2024年10月正式啟用。',
+      '「海之書」以光與海洋為題材，成為將軍海岸線的點睛之筆，於2024年10月正式啟用。',
     ],
   },
   {
