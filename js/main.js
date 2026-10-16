@@ -309,7 +309,23 @@ function initDetail() {
   var p = SITE_PROJECTS[idx];
   document.title = p.title + '｜曉山波 SOLPO Design Studio';
   var meta = document.querySelector('meta[name="description"]');
-  if (meta) meta.setAttribute('content', p.summary || p.desc[0]);
+  var pDesc = String(p.summary || p.desc[0] || '').replace(/\s+/g, ' ').slice(0, 150);
+  if (meta) meta.setAttribute('content', pDesc);
+  /* SEO：專案頁的 canonical 與分享預覽 */
+  var pUrl = 'https://www.solpoart.com/project.html?id=' + encodeURIComponent(p.id);
+  var head = document.head;
+  var canon = document.createElement('link');
+  canon.rel = 'canonical'; canon.href = pUrl; head.appendChild(canon);
+  function setOg(prop, val) {
+    var m = head.querySelector('meta[property="' + prop + '"]');
+    if (!m) { m = document.createElement('meta'); m.setAttribute('property', prop); head.appendChild(m); }
+    m.setAttribute('content', val);
+  }
+  setOg('og:title', document.title);
+  setOg('og:description', pDesc);
+  setOg('og:url', pUrl);
+  setOg('og:type', 'article');
+  setOg('og:image', 'https://www.solpoart.com/' + projectImage(p.id, p.cover || 1));
   document.querySelector('.js-back-label').textContent = p.title;
 
   var imgs = '';
