@@ -122,14 +122,14 @@ main { display: block; }
    往下捲離 Banner 後才加上毛玻璃，存在感隨情境出現 */
 .site-header .glass {
   background: rgba(250, 245, 245, .3);
-  border-color: rgba(255, 255, 255, .6);
+  border-color: transparent;   /* Header 色塊不要白邊 */
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   transition: background .3s ease, border-color .3s ease, backdrop-filter .3s ease, -webkit-backdrop-filter .3s ease;
 }
 .site-header.is-scrolled .glass {
   background: rgba(250, 245, 245, .72);
-  border-color: var(--white);
+  border-color: transparent;
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
 }
@@ -305,7 +305,7 @@ main { display: block; }
 /* 跟 Header 同步：離開頁面頂端後換成毛玻璃，浮在內容上也看得清楚 */
 .site-header.is-scrolled ~ main .btn-back.is-fixed {
   background: rgba(250, 245, 245, .72);
-  border-color: var(--white);
+  border-color: transparent;
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
 }
