@@ -54,7 +54,7 @@ function renderChrome() {
           '<span class="header-divider" aria-hidden="true"></span>' +
           '<a class="text-btn' + (page === 'about' ? ' is-active' : '') + '" href="about.html">About</a>' +
           '<a class="text-btn' + (page === 'projects' || page === 'project' ? ' is-active' : '') + '" href="projects.html">Projects</a>' +
-          '<button class="btn-primary js-contact" type="button">Contact ' + ICONS.arrow24 + '</button>' +
+          '<a class="btn-primary' + (page === 'contact' ? ' is-active' : '') + '" href="contact.html">Contact ' + ICONS.arrow24 + '</a>' +
         '</nav>' +
         '<button class="nav-hamburger glass" type="button" aria-label="開啟選單">' + ICONS.menu + '</button>' +
       '</div></header>' +
@@ -63,7 +63,7 @@ function renderChrome() {
         '<a class="text-btn" href="index.html">Home</a>' +
         '<a class="text-btn" href="about.html">About</a>' +
         '<a class="text-btn" href="projects.html">Projects</a>' +
-        '<button class="btn-primary js-contact" type="button">Contact ' + ICONS.arrow24 + '</button>' +
+        '<a class="btn-primary" href="contact.html">Contact ' + ICONS.arrow24 + '</a>' +
         '<div class="mobile-menu-sns">' +
           '<a class="sns-link" href="' + SITE.instagram + '"' + extAttrs(SITE.instagram) + ' aria-label="Instagram">' + ICONS.ig + '</a>' +
           '<a class="sns-link" href="' + SITE.facebook + '"' + extAttrs(SITE.facebook) + ' aria-label="Facebook">' + ICONS.fb + '</a>' +
@@ -508,7 +508,6 @@ document.addEventListener('DOMContentLoaded', function () {
   var modal = document.querySelector('.modal-overlay');
   function openModal() { closeMenu(); modal.classList.add('open'); document.body.style.overflow = 'hidden'; }
   function closeModal() { modal.classList.remove('open'); document.body.style.overflow = ''; }
-  document.querySelectorAll('.js-contact').forEach(function (b) { b.addEventListener('click', openModal); });
   modal.querySelector('.modal-close').addEventListener('click', closeModal);
 
   /* ---- 複製信箱 ---- */
@@ -522,7 +521,7 @@ document.addEventListener('DOMContentLoaded', function () {
       ta.remove();
     });
   }
-  modal.querySelectorAll('.js-copy').forEach(function (btn) {
+  document.querySelectorAll('.js-copy').forEach(function (btn) {   // 彈窗與 Contact 頁共用
     var tip = btn.parentNode.querySelector('.copy-tip'), t;
     btn.addEventListener('click', function () {
       copyText(btn.dataset.copy).then(function () {

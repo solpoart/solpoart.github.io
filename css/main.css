@@ -1320,3 +1320,13 @@ img {
   .form-row { grid-template-columns: 1fr; gap: 20px; }
   .form-actions .btn-primary { width: 100%; }
 }
+
+/* === Contact 獨立頁 === */
+.about-contact.contact-page { margin-top: 80px; }
+.contact-intro .contact-mail { margin-top: 24px; margin-bottom: 4px; }
+.contact-mail-row { display: inline-flex; }
+.contact-mail-row > a { color: var(--p-500); font-weight: 500; border-bottom: 1px solid currentColor; }
+@media (hover: hover) { .contact-mail-row > a:hover { color: var(--p-300); } }
+.contact-mail-row .copy-btn .i { width: 20px; height: 20px; fill: currentColor; }
+@media (max-width: 1024px) { .about-contact.contact-page { margin-top: 64px; } }
+@media (max-width: 600px) { .about-contact.contact-page { margin-top: 40px; } }

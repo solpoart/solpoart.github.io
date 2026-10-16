@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Roboto:wght@600&family=Roboto+Serif:opsz,wght@8..144,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/main.css?v=20261016w">
+  <link rel="stylesheet" href="css/main.css?v=20261016x">
 </head>
 <body data-page="about">
 
@@ -158,72 +158,11 @@
       </li>
     </ol>
   </section>
-
-  <!-- ===== CONTACT 聯絡表單（防機器人：隱藏欄位陷阱＋填寫時間檢查；送出設定見 main.js 的 SITE.formKey）===== -->
-  <section class="about-contact container" id="contact">
-    <div class="title-bar"><h2>Contact</h2></div>
-    <div class="section-body contact-grid">
-      <div class="contact-intro reveal">
-        <h3>一起聊聊你的想法</h3>
-        <p>不論是已經有明確的需求，或還在摸索方向，都歡迎留下聯絡方式，我們會盡快與你聯繫。</p>
-        <p class="contact-mail">也可以直接寫信到<br><a href="mailto:hello@solpoart.com">hello@solpoart.com</a></p>
-      </div>
-      <form class="contact-form js-contact-form reveal" novalidate>
-        <div class="form-row">
-          <label class="form-field">
-            <span class="form-label">公司或單位名稱<em>必填</em></span>
-            <input type="text" name="company" placeholder="曉山波設計有限公司" data-label="公司或單位名稱" autocomplete="organization" required>
-            <span class="form-error" aria-live="polite"></span>
-          </label>
-          <label class="form-field">
-            <span class="form-label">電話<em>必填</em></span>
-            <input type="tel" name="phone" placeholder="02-1234-5678 或 0912-345-678" data-label="電話" autocomplete="tel" inputmode="tel" required>
-            <span class="form-error" aria-live="polite"></span>
-          </label>
-        </div>
-        <div class="form-row">
-          <label class="form-field">
-            <span class="form-label">聯絡信箱<em>必填</em></span>
-            <input type="email" name="email" placeholder="name@example.com" data-label="聯絡信箱" autocomplete="email" required>
-            <span class="form-error" aria-live="polite"></span>
-          </label>
-          <div class="form-field">
-            <span class="form-label" id="need-label">需求</span>
-            <div class="form-select js-select">
-              <input type="hidden" name="need" value="">
-              <button type="button" class="select-trigger is-empty" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="need-label"><span class="select-value">請選擇</span></button>
-              <ul class="select-list" role="listbox" tabindex="-1">
-                <li role="option" aria-selected="false" data-value="策略諮詢">策略諮詢</li>
-                <li role="option" aria-selected="false" data-value="設計執行">設計執行</li>
-                <li role="option" aria-selected="false" data-value="教育課程">教育課程</li>
-                <li role="option" aria-selected="false" data-value="其他">其他</li>
-              </ul>
-            </div>
-            <span class="form-error"></span>
-          </div>
-        </div>
-        <label class="form-field">
-          <span class="form-label">說明<span class="form-optional">選填</span></span>
-          <textarea name="message" rows="5" placeholder="可以簡單描述專案內容、預計時程或預算"></textarea>
-          <span class="form-error"></span>
-        </label>
-        <!-- 機器人陷阱：一般使用者看不到也不會填 -->
-        <div class="form-trap" aria-hidden="true">
-          <label>網站<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
-          <label><input type="checkbox" name="botcheck" tabindex="-1"></label>
-        </div>
-        <div class="form-actions">
-          <button class="btn-primary" type="submit">送出<span data-icon="arrow24"></span></button>
-          <p class="form-status" role="status" aria-live="polite"></p>
-        </div>
-      </form>
-    </div>
-  </section>
 </main>
 
 <div data-slot="footer"></div>
 
-<script src="js/projects-data.js?v=20261016w"></script>
-<script src="js/main.js?v=20261016w"></script>
+<script src="js/projects-data.js?v=20261016x"></script>
+<script src="js/main.js?v=20261016x"></script>
 </body>
 </html>
