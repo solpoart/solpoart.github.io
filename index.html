@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>曉山波 SOLPO Design Studio</title>
+  <meta name="description" content="曉山波是一個設計品牌，站在專業知識與大眾之間，用設計搭起一座橋。圖解、插畫、出版、品牌與展覽空間設計。">
+  <meta property="og:title" content="曉山波 SOLPO Design Studio">
+  <meta property="og:description" content="站在專業知識與大眾之間，用設計搭起一座橋。">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="pic_projects/animal_origins_2/animal_origins_2_07.webp">
+  <link rel="icon" type="image/webp" href="assets/logo.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Roboto:wght@600&family=Roboto+Serif:opsz,wght@8..144,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body data-page="home">
+
+<div data-slot="header"></div>
+
+<main>
+  <!-- ===== HERO 輪播（內容來自 js/projects-data.js 的 SITE_HERO）===== -->
+  <section class="hero" aria-roledescription="carousel" aria-label="精選專案">
+    <div class="hero-viewport"></div>
+    <div class="hero-controls">
+      <button class="btn-icon hero-prev" type="button" aria-label="上一張">
+        <span data-icon="chevL"></span>
+      </button>
+      <div class="hero-dots"></div>
+      <button class="btn-icon hero-next" type="button" aria-label="下一張">
+        <span data-icon="chevR"></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section class="home-about container">
+    <div class="title-bar">
+      <h2>About</h2>
+      <a class="btn-text-icon" href="about.html">See More<span class="icon-wrap"><span data-icon="arrow24"></span></span></a>
+    </div>
+    <div class="section-body block-info reveal">
+      <div class="pic-fake" data-label="待補圖：品牌形象照"></div>
+      <div class="block-info-text">
+        <p>設計品牌曉山波，總是站在專業知識與大眾之間，用設計搭建橋樑。替艱澀的內容理出脈絡，找到讓人願意駐留欣賞的樣貌。</p>
+        <p>曉，是天色將明未明的時刻，代表希望，也代表知曉、通曉。<br>山是林木與土地，安靜長久，亦是溫柔托住所有人的力量。<br>波是海，一層推著一層，把遠方的東西帶到岸邊。</p>
+        <p>知識應該被看見，像晨光越過山稜，像浪終究會抵達岸邊。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROJECTS（js/projects-data.js 前 3 個）===== -->
+  <section class="home-projects container">
+    <div class="title-bar">
+      <h2>Projects</h2>
+      <a class="btn-text-icon" href="projects.html">See More<span class="icon-wrap"><span data-icon="arrow24"></span></span></a>
+    </div>
+    <div class="section-body card-list js-home-projects"></div>
+  </section>
+</main>
+
+<div data-slot="footer"></div>
+
+<script src="js/projects-data.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
