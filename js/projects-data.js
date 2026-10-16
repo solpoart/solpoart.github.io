@@ -26,7 +26,7 @@ window.SITE_PROJECTS = [
   {
     id: 'national_park_intro',
     title: '國家公園署 國家公園簡介',
-    images: 6, cover: 3, coverZoom: 1.1, coverPos: 'center', keepCover: true,   // 封面兩側有牆面背景，放大 10% 裁掉；大圖取中間的地圖
+    images: 6, cover: 3, coverZoom: 1.1, coverPos: 'center',   // 封面兩側有牆面背景，放大 10% 裁掉；大圖取中間的地圖
     categories: ['設計'],
     tags: ['海報', '印刷品'],
     summary: '打破國家公園之間的界線，用「地景」重新看待國家公園的關係。',
