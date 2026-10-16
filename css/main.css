@@ -540,7 +540,9 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
   color: var(--n-400);
   margin-bottom: 8px;
 }
-.card-tags span::before { content: '#'; }
+.card-tags span:not(.cat)::before { content: '#'; }
+.card-tags .cat { color: var(--p-500); font-weight: 500; }
+.card-tags .cat + span:not(.cat) { margin-left: 4px; }
 .card-arrow {
   width: 56px; height: 56px;
   border-radius: 50%;
@@ -767,6 +769,7 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
   color: var(--n-10);
 }
 .detail-meta { margin-top: 16px; font-size: 16px; line-height: 24px; color: var(--n-10); }
+.detail-meta-sep { display: inline-block; width: 1px; height: 14px; margin: 0 12px; background: #c9c9c9; vertical-align: -1px; }
 .detail-divider { margin: 40px 0; height: 1px; background: #d9d9d9; }
 .detail-desc { font-size: 16px; line-height: 24px; color: var(--n-10); }
 .detail-desc p { white-space: pre-line; }   /* 資料裡的 \n 顯示為換行（保留 Behance 原本的斷行） */

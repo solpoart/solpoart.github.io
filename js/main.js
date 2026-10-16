@@ -104,8 +104,14 @@ function renderChrome() {
 }
 
 /* ---- 卡片 HTML ---- */
+// 卡片標籤：先放大分類（與篩選按鈕一致），再放細項標籤（# 開頭）；跟大分類重複的細項不再顯示
+function tagList(p) {
+  return p.tags.filter(function (t) { return p.categories.indexOf(t) < 0; });
+}
 function tagsHTML(p) {
-  return '<div class="card-tags">' + p.tags.slice(0, 3).map(function (t) { return '<span>' + esc(t) + '</span>'; }).join('') + '</div>';
+  return '<div class="card-tags">' +
+    p.categories.map(function (c) { return '<span class="cat">' + esc(c) + '</span>'; }).join('') +
+    tagList(p).map(function (t) { return '<span>' + esc(t) + '</span>'; }).join('') + '</div>';
 }
 function cardH(p) {
   return '<a class="card-h reveal" href="project.html?id=' + p.id + '">' +
@@ -324,7 +330,8 @@ function initDetail() {
     '<div class="detail-hero"><img src="' + projectImage(p.id, p.cover) + '" alt="' + esc(p.title) + '" fetchpriority="high"></div>' +
     '<div class="detail-body">' +
       '<h1 class="detail-title">' + esc(p.title) + '</h1>' +
-      '<p class="detail-meta">類別：' + p.tags.map(esc).join('、') + '</p>' +
+      '<p class="detail-meta">類別：' + p.categories.map(esc).join('、') +
+        (tagList(p).length ? '<span class="detail-meta-sep"></span>標籤：' + tagList(p).map(esc).join('、') : '') + '</p>' +
       '<div class="detail-divider" role="presentation"></div>' +
       '<div class="detail-desc">' + p.desc.map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('') +
         (p.list ? '<ul class="detail-list">' + p.list.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' : '') +
