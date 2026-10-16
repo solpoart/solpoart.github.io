@@ -769,6 +769,7 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
 .detail-meta { margin-top: 16px; font-size: 16px; line-height: 24px; color: var(--n-10); }
 .detail-divider { margin: 40px 0; height: 1px; background: #d9d9d9; }
 .detail-desc { font-size: 16px; line-height: 24px; color: var(--n-10); }
+.detail-desc p { white-space: pre-line; }   /* 資料裡的 \n 顯示為換行（保留 Behance 原本的斷行） */
 .detail-desc p + p { margin-top: 16px; }
 .detail-list { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
 .detail-list li { position: relative; padding-left: 16px; }
