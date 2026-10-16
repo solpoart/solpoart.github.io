@@ -1354,7 +1354,13 @@ img {
 }
 .hero--below .hero-card-action,
 .hero--below .hero-card:hover .hero-card-action { grid-template-rows: 1fr !important; opacity: 1 !important; flex: none; }
-.hero--below .hero-card-action-pad { padding: 0 0 6px; }
+.hero--below .hero-card-action-pad { padding: 6px 0; }
+/* 一直展開，不需要裁切；讓 hover 的圓形底完整顯示 */
+.hero--below .hero-card-action > div { overflow: visible; }
+/* 桌機：簡介寬度夠，最多一行，跟 Show Detail 的距離縮短 */
+@media (min-width: 1025px) {
+  .hero--below .hero-card-desc { -webkit-line-clamp: 1; min-height: var(--lh-body); }
+}
 /* Page Control 跟標題靠上對齊：箭頭的中線對齊標題第一行的中線（扣掉控制列外圍 12px 緩衝） */
 .hero--below .hero-controls { flex: none; margin: calc((var(--hb-lh) - 56px) / 2 - 12px) -12px 0 0; }
 
