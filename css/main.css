@@ -41,9 +41,9 @@
   --fs-title1:  56px;   /* Title 1 */
   --lh-title1:  92px;
   --fs-title2:  24px;   /* Title 2 / Content 1 */
-  --lh-title2:  36px;
+  --lh-title2:  41.4px;   /* 原 36px，行距 +15% */
   --fs-body:    16px;   /* Content 2 / Button 1 */
-  --lh-body:    24px;
+  --lh-body:    27.6px;   /* 原 24px，行距 +15% */
 
   --radius-pill: 40px;
   --radius-img:  24px;
@@ -63,6 +63,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html { overflow-x: hidden; overflow-x: clip; scroll-behavior: smooth; background: var(--n-50); }   /* clip 不會讓 position: sticky 失效；舊瀏覽器退回 hidden */
 body {
+  letter-spacing: .025em;   /* 字距 +2.5%，比較好閱讀 */
   font-family: var(--font-tc);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
@@ -505,7 +506,7 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
 /* Block_Info */
 .block-info {
   display: grid;
-  grid-template-columns: 640fr 740fr;
+  grid-template-columns: 788fr 592fr;   /* 圖放大、文字欄縮小 20% */
   gap: 60px;
   align-items: start;
 }
@@ -639,7 +640,7 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
 .process-name .zh { font-size: var(--fs-title2); line-height: var(--lh-title2); color: var(--p-300); }
 .process-name .en { font-size: var(--fs-body); line-height: var(--lh-body); color: var(--n-500); }
 .process-desc { margin-top: 8px; font-size: var(--fs-body); line-height: var(--lh-body); color: var(--n-950); }
-.process-output { margin-top: 12px; font-size: 14px; line-height: 22px; color: var(--n-500); }
+.process-output { margin-top: 12px; font-size: 14px; line-height: 25.3px; color: var(--n-500); }
 .process-output span {
   display: inline-block; margin-right: 8px; padding: 0 8px;
   border-radius: 100px; background: var(--p-50); color: var(--p-500);
@@ -778,11 +779,11 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
   line-height: var(--lh-title1);
   color: var(--n-10);
 }
-.detail-meta { margin-top: 16px; font-size: 16px; line-height: 24px; color: var(--n-10); }
+.detail-meta { margin-top: 16px; font-size: 16px; line-height: 27.6px; color: var(--n-10); }
 .detail-tags { color: var(--n-400); }   /* 標籤次要，跟卡片上的 # 標籤同色 */
 .detail-meta-sep { display: inline-block; width: 1px; height: 14px; margin: 0 12px; background: #c9c9c9; vertical-align: -1px; }
 .detail-divider { margin: 40px 0; height: 1px; background: #d9d9d9; }
-.detail-desc { font-size: 16px; line-height: 24px; color: var(--n-10); }
+.detail-desc { font-size: 16px; line-height: 27.6px; color: var(--n-10); }
 .detail-desc p { white-space: pre-line; }   /* 資料裡的 \n 顯示為換行（保留 Behance 原本的斷行） */
 .detail-desc p + p { margin-top: 16px; }
 .detail-list { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
@@ -801,19 +802,19 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
 .detail-figure.has-heading:not(:first-child) { margin-top: 24px; }
 .detail-heading {
   margin-bottom: 16px;
-  font-size: 20px; line-height: 28px; font-weight: 500;
+  font-size: 20px; line-height: 32px; font-weight: 500;
   color: var(--p-950);
 }
 .detail-caption {
   margin-top: 12px;
-  font-size: 15px; line-height: 24px;
+  font-size: 15px; line-height: 27.6px;
   color: var(--n-10);
 }
 .detail-caption strong { font-weight: 600; color: var(--p-950); margin-right: 8px; }
 @media (max-width: 600px) {
   .detail-figure.has-heading:not(:first-child) { margin-top: 16px; }
-  .detail-heading { font-size: 18px; line-height: 26px; margin-bottom: 12px; }
-  .detail-caption { font-size: 14px; line-height: 22px; margin-top: 10px; }
+  .detail-heading { font-size: 18px; line-height: 30px; margin-bottom: 12px; }
+  .detail-caption { font-size: 14px; line-height: 25.3px; margin-top: 10px; }
 }
 .zoomable {
   display: block; width: 100%; padding: 0;
@@ -1028,7 +1029,7 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
 @media (max-width: 1024px) {
   :root {
     --fs-display: 56px;
-    --fs-title2: 20px; --lh-title2: 32px;
+    --fs-title2: 20px; --lh-title2: 36.8px;
     --gutter: 32px;
     --header-top: 24px; --header-h: 76px;
   }
@@ -1059,7 +1060,7 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
   :root {
     --fs-display: 44px;
     --fs-title1: 30px; --lh-title1: 42px;
-    --fs-title2: 18px; --lh-title2: 30px;
+    --fs-title2: 18px; --lh-title2: 34.5px;
     --gutter: 16px;
     --header-top: 16px; --header-h: 64px;
     --radius-img: 16px;
@@ -1125,7 +1126,7 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
   .process-card { margin-left: 8px; padding: 18px 20px; }
   .service-grid { gap: 32px; }
   .block-service { grid-template-columns: 112px 1fr; gap: 16px; }
-  .block-service-text { gap: 8px; font-size: 16px; line-height: 26px; }
+  .block-service-text { gap: 8px; font-size: 16px; line-height: 30px; }
   .block-service-name { gap: 0; }
   .info-grid { gap: 32px; }
   .info-text { gap: 40px; }
@@ -1196,9 +1197,9 @@ img {
 .info-block p.info-motto {   /* 引言樣式：左側品牌色細線＋深色文字，避免被誤認為連結 */
   margin-top: 40px; padding: 4px 0 4px 20px;
   border-left: 3px solid var(--p-300);
-  font-size: 20px; line-height: 32px; font-weight: 500; color: var(--p-950);
+  font-size: 20px; line-height: 36.8px; font-weight: 500; color: var(--p-950);
 }
-@media (max-width: 600px) { .info-block p.info-motto { margin-top: 32px; padding-left: 16px; font-size: 17px; line-height: 28px; } }
+@media (max-width: 600px) { .info-block p.info-motto { margin-top: 32px; padding-left: 16px; font-size: 17px; line-height: 32.2px; } }
 @media (max-width: 1024px) { .info-img { max-width: 480px; } }
 .info-text.info-block { display: block; }
 .about-info .info-grid { grid-template-columns: 5fr 7fr; align-items: start; }
