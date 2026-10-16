@@ -1184,7 +1184,12 @@ img {
 /* === About：Info（單張圖＋文字）=== */
 .info-img { display: block; width: 100%; height: auto; border-radius: var(--radius-img); background: var(--p-100); }
 .info-block h3 .en { display: block; margin-top: 4px; font-size: 14px; line-height: 22px; letter-spacing: .08em; color: var(--n-500); }
-.info-motto { font-weight: 500; color: var(--p-500); }
+.info-block p.info-motto {   /* 引言樣式：左側品牌色細線＋深色文字，避免被誤認為連結 */
+  margin-top: 40px; padding: 4px 0 4px 20px;
+  border-left: 3px solid var(--p-300);
+  font-size: 20px; line-height: 32px; font-weight: 500; color: var(--p-950);
+}
+@media (max-width: 600px) { .info-block p.info-motto { margin-top: 32px; padding-left: 16px; font-size: 17px; line-height: 28px; } }
 @media (max-width: 1024px) { .info-img { max-width: 480px; } }
 .info-text.info-block { display: block; }
 .about-info .info-grid { grid-template-columns: 5fr 7fr; align-items: start; }
