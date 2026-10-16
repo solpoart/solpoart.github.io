@@ -105,6 +105,8 @@ function renderChrome() {
 
 /* ---- 卡片 HTML ---- */
 // 卡片標籤：先放大分類（與篩選按鈕一致），再放細項標籤（# 開頭）；跟大分類重複的細項不再顯示
+// 封面放大（例如照片兩側有多餘背景）：資料裡加 coverZoom: 1.1
+function zoomAttr(p) { return p.coverZoom ? ' style="--zoom:' + p.coverZoom + '"' : ''; }
 function tagList(p) {
   return p.tags.filter(function (t) { return p.categories.indexOf(t) < 0; });
 }
@@ -115,14 +117,14 @@ function tagsHTML(p) {
 }
 function cardH(p) {
   return '<a class="card-h reveal" href="project.html?id=' + p.id + '">' +
-    '<div class="card-img"><img src="' + projectImage(p.id, p.cover) + '" alt="' + esc(p.title) + '" loading="lazy"></div>' +
+    '<div class="card-img"><img' + zoomAttr(p) + ' src="' + projectImage(p.id, p.cover) + '" alt="' + esc(p.title) + '" loading="lazy"></div>' +
     '<div class="card-h-body"><div>' + tagsHTML(p) + '<h3 class="card-h-title">' + esc(p.title) + '</h3></div>' +
     '<div class="card-h-foot"><span class="card-arrow">' + ICONS.arrow56 + '</span></div></div>' +
   '</a>';
 }
 function cardV(p) {
   return '<a class="card-v reveal" href="project.html?id=' + p.id + '" data-cats="' + esc(p.categories.join('|')) + '">' +
-    '<div class="card-img"><img src="' + projectImage(p.id, p.cover) + '" alt="' + esc(p.title) + '" loading="lazy"></div>' +
+    '<div class="card-img"><img' + zoomAttr(p) + ' src="' + projectImage(p.id, p.cover) + '" alt="' + esc(p.title) + '" loading="lazy"></div>' +
     '<div class="card-v-body">' + tagsHTML(p) +
       '<div class="card-v-row"><h3 class="card-v-title">' + esc(p.title) + '</h3><span class="card-arrow">' + ICONS.arrow56 + '</span></div>' +
     '</div>' +
@@ -327,7 +329,7 @@ function initDetail() {
   var picks = others.slice(0, 3);
 
   root.innerHTML =
-    '<div class="detail-hero"><img src="' + projectImage(p.id, p.cover) + '" alt="' + esc(p.title) + '" fetchpriority="high"></div>' +
+    '<div class="detail-hero"><img' + zoomAttr(p) + ' src="' + projectImage(p.id, p.cover) + '" alt="' + esc(p.title) + '" fetchpriority="high"></div>' +
     '<div class="detail-body">' +
       '<h1 class="detail-title">' + esc(p.title) + '</h1>' +
       '<p class="detail-meta">類別：' + p.categories.map(esc).join('、') +
@@ -343,7 +345,9 @@ function initDetail() {
       '<div class="card-list">' + picks.map(cardH).join('') + '</div>' +
     '</section>';
   var heroImg = root.querySelector('.detail-hero img');
-  var markTall = function () { if (heroImg.naturalHeight / heroImg.naturalWidth > 1.2) heroImg.classList.add('is-tall'); };
+  // 直式圖預設對齊上方；資料有 coverPos 時改用指定位置（例如 'center'）
+  if (p.coverPos) heroImg.style.objectPosition = p.coverPos;
+  var markTall = function () { if (!p.coverPos && heroImg.naturalHeight / heroImg.naturalWidth > 1.2) heroImg.classList.add('is-tall'); };
   if (heroImg.complete) markTall(); else heroImg.addEventListener('load', markTall);
   initLightbox(root);
 }

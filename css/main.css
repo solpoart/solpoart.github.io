@@ -533,7 +533,7 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
   overflow: hidden;
   background: var(--p-100);
 }
-.card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
+.card-img img { width: 100%; height: 100%; object-fit: cover; transform: scale(var(--zoom, 1)); transition: transform .5s var(--ease); }
 .card-tags {
   display: flex; flex-wrap: wrap; gap: 0 12px;
   font-size: 16px; line-height: 24px;
@@ -561,7 +561,7 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
 @media (hover: hover) {
   .card-h:hover, .card-v:hover { background: var(--p-50); }
   .card-h:hover .card-arrow, .card-v:hover .card-arrow { background: var(--p-200); color: var(--p-950); }
-  .card-h:hover .card-img img, .card-v:hover .card-img img { transform: scale(1.03); }
+  .card-h:hover .card-img img, .card-v:hover .card-img img { transform: scale(calc(var(--zoom, 1) * 1.03)); }
   .card-h:active, .card-v:active { background: var(--p-100); }
   .card-h:active .card-arrow, .card-v:active .card-arrow { background: var(--p-300); }
 }
@@ -759,7 +759,7 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
   overflow: hidden;
   background: var(--p-100);
 }
-.detail-hero img { width: 100%; height: 100%; object-fit: cover; }
+.detail-hero img { width: 100%; height: 100%; object-fit: cover; transform: scale(var(--zoom, 1)); }
 .detail-hero img.is-tall { object-position: center top; }   /* 直式長圖（例如網頁設計）大圖區顯示最上方 */
 .detail-body { width: min(640px, 100%); margin: 40px auto 0; }
 .detail-title {
