@@ -1203,3 +1203,83 @@ img {
 .info-text.info-block { display: block; }
 .about-info .info-grid { grid-template-columns: 5fr 7fr; align-items: start; }
 @media (max-width: 1024px) { .about-info .info-grid { grid-template-columns: 1fr; } }
+
+/* === Header：所有尺寸往下捲都會隱藏，往上捲再出現（原本只有手機）=== */
+.site-header.nav-hidden { transform: translateY(calc(-1 * (var(--header-top) + var(--header-h) + 24px))); }
+
+/* === About 區塊順序：Info → Selected Works → Service → Process → Contact（統一上下間距）=== */
+.about-info { margin-top: 80px; }
+.about-works, .about-service, .about-process, .about-process + .about-service, .about-contact { margin-top: 160px; }
+@media (max-width: 1024px) {
+  .about-info { margin-top: 64px; }
+  .about-works, .about-service, .about-process, .about-contact { margin-top: 120px; }
+}
+@media (max-width: 600px) {
+  .about-info { margin-top: 40px; }
+  .about-works, .about-service, .about-process, .about-contact { margin-top: 80px; }
+}
+
+/* === About：Contact 聯絡表單 === */
+.contact-grid { display: grid; grid-template-columns: 4fr 8fr; gap: 56px; align-items: start; }
+.contact-intro h3 { font-weight: 500; font-size: var(--fs-title2); line-height: var(--lh-title2); color: var(--p-300); margin-bottom: 16px; }
+.contact-intro p { font-size: var(--fs-body); line-height: var(--lh-body); color: var(--n-10); }
+.contact-intro .contact-mail { margin-top: 24px; color: var(--n-500); }
+.contact-mail a { color: var(--p-500); font-weight: 500; border-bottom: 1px solid currentColor; }
+@media (hover: hover) { .contact-mail a:hover { color: var(--p-300); } }
+
+.contact-form {
+  display: flex; flex-direction: column; gap: 24px;
+  padding: 40px;
+  border: 1px solid var(--n-100);
+  border-radius: var(--radius-img);
+  background: rgba(255, 255, 255, .4);
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.form-field { display: flex; flex-direction: column; gap: 8px; }
+.form-label { display: flex; align-items: center; gap: 8px; font-size: 16px; line-height: 24px; font-weight: 500; color: var(--p-950); }
+.form-label em, .form-optional {
+  font-style: normal; font-weight: 400; font-size: 12px; line-height: 20px;
+  padding: 0 8px; border-radius: 100px;
+}
+.form-label em { background: var(--p-50); color: var(--p-500); }
+.form-optional { background: var(--n-100); color: var(--n-500); }
+.contact-form input, .contact-form select, .contact-form textarea {
+  width: 100%;
+  font: inherit; font-size: 16px; line-height: 24px; color: var(--n-950);
+  padding: 13px 16px;
+  border: 1px solid var(--n-200);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, .75);
+  transition: border-color var(--t), box-shadow var(--t), background var(--t);
+  -webkit-appearance: none; appearance: none;
+}
+.contact-form textarea { resize: vertical; min-height: 140px; }
+.contact-form ::placeholder { color: var(--n-400); }
+.contact-form input:focus, .contact-form select:focus, .contact-form textarea:focus {
+  outline: none; border-color: var(--p-300); background: #fff;
+  box-shadow: 0 0 0 4px var(--p-100);
+}
+@media (hover: hover) { .contact-form input:hover, .contact-form select:hover, .contact-form textarea:hover { border-color: var(--p-200); } }
+.form-select { position: relative; display: block; }
+.form-select select { padding-right: 48px; cursor: pointer; }
+.form-select select:invalid, .form-select select.is-empty { color: var(--n-400); }
+.form-select::after {
+  content: ''; position: absolute; right: 18px; top: 50%; width: 10px; height: 10px; margin-top: -7px;
+  border-right: 1.5px solid var(--n-500); border-bottom: 1.5px solid var(--n-500);
+  transform: rotate(45deg); pointer-events: none;
+}
+.form-error { min-height: 0; font-size: 14px; line-height: 20px; color: #b4574a; }
+.form-error:empty { display: none; }
+.form-field.has-error input, .form-field.has-error textarea { border-color: #d48b80; background: #fff; }
+.form-trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.form-actions { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; margin-top: 8px; }
+.form-actions .btn-primary .i { width: 24px; height: 24px; fill: currentColor; }
+.form-status { font-size: 15px; line-height: 22px; color: var(--n-500); }
+.form-status.is-success { color: var(--p-500); font-weight: 500; }
+.form-status.is-error { color: #b4574a; }
+@media (max-width: 1024px) { .contact-grid { grid-template-columns: 1fr; gap: 32px; } }
+@media (max-width: 600px) {
+  .contact-form { padding: 24px 20px; gap: 20px; }
+  .form-row { grid-template-columns: 1fr; gap: 20px; }
+  .form-actions .btn-primary { width: 100%; }
+}

@@ -10,6 +10,9 @@ var SITE = {
   facebook:  'https://www.facebook.com/podo.tw/',
   behance:   'https://www.behance.net/podoart',
   email:     'hello@solpoart.com',
+  // 聯絡表單：到 web3forms.com 用 hello@solpoart.com 申請免費 Access Key 後貼在這裡。
+  // 還沒填之前，送出時會改開使用者的郵件程式（內容自動帶入），一樣能聯絡得到
+  formKey:   '',
   copyright: 'Copyright © 2026 Po Hsu.',
   footerEgg: '歡迎來到曉山波設計',   // 游標移到 Copyright 上時出現的彩蛋文字
 };
@@ -459,7 +462,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var lastY = window.scrollY, downDelta = 0;
     window.addEventListener('scroll', function () {
       var y = window.scrollY;
-      if (window.innerWidth > 600 || y < 80) { header.classList.remove('nav-hidden'); downDelta = 0; }
+      // 所有尺寸：往下捲（累積 40px）隱藏 Header，往上捲再出現；選單打開時不隱藏
+      var menuOpen = mobileMenu && mobileMenu.classList.contains('open');
+      if (y < 80 || menuOpen) { header.classList.remove('nav-hidden'); downDelta = 0; }
       else if (y > lastY) { downDelta += y - lastY; if (downDelta > 40) header.classList.add('nav-hidden'); }
       else if (y < lastY - 4) { header.classList.remove('nav-hidden'); downDelta = 0; }
       document.body.classList.toggle('header-hidden', header.classList.contains('nav-hidden'));
@@ -565,6 +570,63 @@ document.addEventListener('DOMContentLoaded', function () {
   document.addEventListener('dragstart', function (e) {
     if (e.target.tagName === 'IMG') e.preventDefault();
   });
+
+  /* ---- About 聯絡表單：驗證＋防機器人（隱藏欄位陷阱、填寫時間太短直接擋）＋送出 ---- */
+  var cform = document.querySelector('.js-contact-form');
+  if (cform) {
+    var startedAt = Date.now();
+    var needSel = cform.querySelector('select[name="need"]');
+    var syncSel = function () { needSel.classList.toggle('is-empty', !needSel.value); };
+    syncSel(); needSel.addEventListener('change', syncSel);
+    cform.addEventListener('reset', function () { setTimeout(syncSel, 0); });
+    var statusEl = cform.querySelector('.form-status');
+    var setStatus = function (type, msg) { statusEl.className = 'form-status is-' + type; statusEl.textContent = msg; };
+    var fieldErr = function (input, msg) {
+      var wrap = input.closest('.form-field'); wrap.classList.toggle('has-error', !!msg);
+      wrap.querySelector('.form-error').textContent = msg || '';
+    };
+    var check = function (input) {
+      var v = input.value.trim(), msg = '';
+      if (input.required && !v) msg = '請填寫' + input.dataset.label;
+      else if (input.type === 'email' && v && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) msg = '信箱格式好像不太對';
+      else if (input.type === 'tel' && v && !/^[\d\s()+\-#轉]{7,}$/.test(v)) msg = '電話格式好像不太對';
+      fieldErr(input, msg); return !msg;
+    };
+    cform.querySelectorAll('[data-label]').forEach(function (inp) {
+      inp.addEventListener('blur', function () { if (inp.value) check(inp); });
+      inp.addEventListener('input', function () { if (inp.closest('.form-field').classList.contains('has-error')) check(inp); });
+    });
+    cform.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var ok = true, first = null;
+      cform.querySelectorAll('[data-label]').forEach(function (inp) { if (!check(inp)) { ok = false; first = first || inp; } });
+      if (!ok) { first.focus(); setStatus('error', '還有欄位需要補上喔'); return; }
+      // 機器人防護：隱藏欄位有值、或 3 秒內就送出 → 當作機器人，假裝成功但不寄出
+      if (cform.querySelector('[name="botcheck"]').checked || cform.querySelector('[name="website"]').value || Date.now() - startedAt < 3000) {
+        cform.reset(); setStatus('success', '已收到你的訊息，我們會盡快回覆！'); return;
+      }
+      var data = {
+        '公司或單位名稱': cform.company.value.trim(), '電話': cform.phone.value.trim(),
+        '聯絡信箱': cform.email.value.trim(), '需求': cform.need.value || '未選擇', '說明': cform.message.value.trim() || '（未填）'
+      };
+      if (!SITE.formKey) {   // 尚未申請表單服務：改開郵件程式
+        var body = Object.keys(data).map(function (k) { return k + '：' + data[k]; }).join('\n');
+        location.href = 'mailto:' + SITE.email + '?subject=' + encodeURIComponent('網站聯絡｜' + data['公司或單位名稱']) + '&body=' + encodeURIComponent(body);
+        setStatus('info', '已幫你開啟郵件程式，確認內容後按下寄出就完成了。');
+        return;
+      }
+      var btn = cform.querySelector('button[type="submit"]'); btn.disabled = true; setStatus('info', '傳送中⋯');
+      var payload = Object.assign({ access_key: SITE.formKey, subject: '曉山波網站聯絡｜' + data['公司或單位名稱'], from_name: '曉山波官網', replyto: data['聯絡信箱'], botcheck: false }, data);
+      fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(payload) })
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+          if (res.success) { cform.reset(); setStatus('success', '已收到你的訊息，我們會盡快回覆！'); }
+          else throw new Error(res.message);
+        })
+        .catch(function () { setStatus('error', '送出失敗，請稍後再試，或直接寫信到 ' + SITE.email); })
+        .then(function () { btn.disabled = false; });
+    });
+  }
 
   /* ---- About Service icon 動態：桌機滑入播一次；觸控裝置捲到畫面上播一次 ---- */
   var svcBlocks = document.querySelectorAll('.block-service');

@@ -328,6 +328,7 @@ window.SITE_PROJECTS = [
   },
   {
     id: 'trip_in_the_world',
+    hidden: true,   // 暫時隱藏（要重新顯示時刪掉這行）
     title: '世界旅行 水彩手記',
     images: 12, cover: 3,
     categories: ['藝術'],
@@ -352,6 +353,7 @@ window.SITE_PROJECTS = [
   },
   {
     id: 'gen_ed_kaleidoscope',
+    hidden: true,   // 暫時隱藏（要重新顯示時刪掉這行）
     title: '通識萬花筒',
     images: 9, cover: 3,
     categories: ['設計'],
@@ -364,6 +366,7 @@ window.SITE_PROJECTS = [
   },
   {
     id: 'soochow_exhibition_poster',
+    hidden: true,   // 暫時隱藏（要重新顯示時刪掉這行）
     title: '東吳大學 通識活動海報',
     images: 9, cover: 3,
     categories: ['設計'],
@@ -424,6 +427,10 @@ window.SITE_PROJECTS = [
     },
   },
 ];
+
+/* ---- 隱藏專案：資料裡有 hidden: true 的專案不會出現在網站任何地方（列表、首頁、相關推薦、詳情頁網址） ---- */
+window.SITE_PROJECTS_ALL = window.SITE_PROJECTS;
+window.SITE_PROJECTS = window.SITE_PROJECTS_ALL.filter(function (p) { return !p.hidden; });
 
 /* ---- helpers ---- */
 window.projectImage = function (id, n) {
