@@ -47,7 +47,7 @@ function renderChrome() {
   if (header) {
     header.outerHTML =
       '<header class="site-header"><div class="container">' +
-        '<a href="index.html" class="header-logo glass" aria-label="曉山波 首頁"><img src="assets/logo.webp" alt="曉山波 SOLPO Design Studio" width="169" height="80"></a>' +
+        '<a href="index.html" class="header-logo glass" aria-label="曉山波 首頁"><img src="assets/logo.webp" alt="曉山波 SOLPO Design Studio" width="231" height="60"></a>' +
         '<nav class="header-menu glass" aria-label="主選單">' +
           '<a class="sns-link" href="' + SITE.instagram + '"' + extAttrs(SITE.instagram) + ' aria-label="Instagram">' + ICONS.ig + '</a>' +
           '<a class="sns-link" href="' + SITE.facebook + '"' + extAttrs(SITE.facebook) + ' aria-label="Facebook">' + ICONS.fb + '</a>' +
@@ -169,6 +169,19 @@ function initHero() {
   var desc = card.querySelector('.hero-card-desc');
   var link = card.querySelector('.hero-card-link');
   var cur = 0, timer = null;
+
+  /* .hero 加上 hero--below 時，說明與切換控制移到圖片下方的同一列 */
+  if (root.classList.contains('hero--below')) {
+    var bar = document.createElement('div');
+    bar.className = 'hero-bar';
+    bar.innerHTML = '<div class="container hero-bar-inner"></div>';
+    var inner = bar.firstChild;
+    var oldWrap = card.closest('.hero-card-wrap');
+    inner.appendChild(card);
+    inner.appendChild(root.querySelector('.hero-controls'));
+    oldWrap.remove();
+    slidesWrap.after(bar);
+  }
 
   function fill(i) {
     title.textContent = data[i].p.title;

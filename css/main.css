@@ -142,7 +142,7 @@ main { display: block; }
   align-items: center;
   justify-content: center;
 }
-.header-logo img { width: 169px; height: 80px; object-fit: contain; }
+.header-logo img { width: 231px; height: 60px; object-fit: contain; }
 
 .header-menu {
   pointer-events: auto;
@@ -1034,7 +1034,7 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
     --header-top: 24px; --header-h: 76px;
   }
   .header-logo { padding: 0 14px; border-radius: 28px; }
-  .header-logo img { width: 140px; height: 66px; }
+  .header-logo img { width: 200px; height: 52px; }
   .header-menu { gap: 22px; padding: 0 10px 0 24px; border-radius: 28px; }
   .header-divider { height: 40px; }
 
@@ -1069,7 +1069,7 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
   .site-header.nav-hidden { transform: translateY(-130px); }
 
   .header-logo { padding: 0 14px; border-radius: 22px; }
-  .header-logo img { width: 104px; height: 50px; }
+  .header-logo img { width: 162px; height: 42px; }
   .header-menu { display: none; }
   .nav-hamburger {
     display: flex; align-items: center; justify-content: center;
@@ -1330,3 +1330,57 @@ img {
 .contact-mail-row .copy-btn .i { width: 20px; height: 20px; fill: currentColor; }
 @media (max-width: 1024px) { .about-contact.contact-page { margin-top: 64px; } }
 @media (max-width: 600px) { .about-contact.contact-page { margin-top: 40px; } }
+
+/* === Hero A 方案、Header LOGO 與 Contact（2026-10-16）=== */
+/* ===== Hero：說明與切換控制在圖片下方（.hero--below）===== */
+.hero--below .hero-bar-inner {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 48px; padding-top: 28px;
+}
+.hero--below .hero-card {
+  flex: 1; min-width: 0; width: auto; max-width: 760px;
+  padding: 0; background: none; border: 0; border-radius: 0;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.hero--below .hero-card-text { flex: 1; min-width: 0; gap: 6px; }
+.hero--below { --hb-fs: 20px; --hb-lh: 32px; }
+/* 圖片高度比原本矮 72px，讓第一個畫面就看得到下方的 Show Detail */
+@media (min-width: 601px) { .hero--below .hero-viewport { height: clamp(464px, calc(47.92vw - 96px), 824px); } }
+.hero--below .hero-card-title { font-size: var(--hb-fs); line-height: var(--hb-lh); }
+.hero--below .hero-card-desc {
+  color: var(--n-600);
+  -webkit-line-clamp: 2;
+  min-height: calc(var(--lh-body) * 2);
+}
+.hero--below .hero-card-action,
+.hero--below .hero-card:hover .hero-card-action { grid-template-rows: 1fr !important; opacity: 1 !important; flex: none; }
+.hero--below .hero-card-action-pad { padding: 0 0 6px; }
+/* Page Control 跟標題靠上對齊：箭頭的中線對齊標題第一行的中線（扣掉控制列外圍 12px 緩衝） */
+.hero--below .hero-controls { flex: none; margin: calc((var(--hb-lh) - 56px) / 2 - 12px) -12px 0 0; }
+
+@media (max-width: 1024px) { .hero--below { --hb-fs: 18px; --hb-lh: 30px; } }
+
+/* ===== Header LOGO 底色較不透明，深色或同色系圖片上也看得清楚 ===== */
+.site-header .header-logo.glass { background: rgba(250, 245, 245, .9); }
+.site-header.is-scrolled .header-logo.glass { background: rgba(250, 245, 245, .92); }
+
+/* ===== Header 的 Contact：文字＋圖示按鈕（主色）===== */
+.header-menu .btn-primary,
+.header-menu .btn-primary:hover,
+.header-menu .btn-primary:active,
+.header-menu .btn-primary.is-pressed {
+  background: none !important;
+  filter: none;
+  padding: 16px 16px 16px 0;
+  color: var(--p-500);
+}
+.header-menu .btn-primary .i { transition: transform var(--t) var(--ease); }
+@media (hover: hover) { .header-menu .btn-primary:hover { color: var(--p-600); } .header-menu .btn-primary:hover .i { transform: translateX(3px); } }
+.header-menu .btn-primary:active, .header-menu .btn-primary.is-pressed { color: var(--p-700); }
+
+@media (max-width: 600px) {
+  .hero--below { --hb-fs: 17px; --hb-lh: 28px; }
+  /* 手機：Page Control 在標題上面 */
+  .hero--below .hero-bar-inner { flex-direction: column; align-items: stretch; gap: 4px; padding-top: 12px; }
+  .hero--below .hero-controls { order: -1; margin: 0 0 0 -22px; }   /* 齊左：扣掉控制列緩衝與圖示內留白，讓箭頭的筆畫跟下方文字對齊 */
+}
