@@ -150,7 +150,7 @@ function initHero() {
 
   slidesWrap.innerHTML = data.map(function (d, i) {
     return '<div class="hero-slide' + (i === 0 ? ' is-active' : '') + '" aria-hidden="' + (i !== 0) + '">' +
-      '<img src="' + projectImage(d.p.id, d.h.image) + '" alt="' + esc(d.p.title) + '"' + (i === 0 ? ' fetchpriority="high"' : ' loading="lazy"') + '>' +
+      '<img' + (d.h.zoom ? ' style="--zoom:' + d.h.zoom + '"' : '') + ' src="' + projectImage(d.p.id, d.h.image) + '" alt="' + esc(d.p.title) + '"' + (i === 0 ? ' fetchpriority="high"' : ' loading="lazy"') + '>' +
       '</div>';
   }).join('') +
   '<div class="hero-card-wrap"><div class="container"><div class="hero-card">' +

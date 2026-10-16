@@ -16,8 +16,8 @@ window.SITE_CATEGORIES = ['設計', '藝術', '品牌', '空間/展覽', '課程
 window.SITE_HERO = [
   { id: 'animal_origins_2', image: 7 },
   { id: 'taiwanese_animals_calendar', image: 4 },
-  { id: 'animal_origins_3', image: 1 },
-  { id: 'ocean_picture_book_contest', image: 4 },
+  { id: 'national_park_intro', image: 3, zoom: 1.12 },   // zoom：圖片兩側有多餘背景時放大
+  { id: 'xpark_sea_turtle_rescue', image: 2 },
   { id: 'sustainable_canteen', image: 1 },
   { id: 'travel_with_animals', image: 7 },
 ];
@@ -124,7 +124,7 @@ window.SITE_PROJECTS = [
   {
     id: 'animal_origins_3',
     title: '動物與牠們的產地 III',
-    images: 13, cover: 1,
+    images: 13, cover: 6,
     categories: ['藝術'],
     tags: ['藝術創作', '水彩', '插畫'],
     summary: '延伸自動物棲地的系列，持續探索場域中生物與不同型態水分的關係。',

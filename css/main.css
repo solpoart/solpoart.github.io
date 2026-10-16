@@ -423,10 +423,10 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
 .hero-slide img {
   width: 100%; height: 100%;
   object-fit: cover;
-  transform: scale(1.04);
+  transform: scale(calc(var(--zoom, 1) * 1.04));
   transition: transform 6s ease-out;
 }
-.hero-slide.is-active img { transform: scale(1); }
+.hero-slide.is-active img { transform: scale(var(--zoom, 1)); }
 .hero-card-wrap {
   position: absolute;
   left: 0; right: 0; bottom: 60px;
@@ -434,7 +434,7 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
 }
 .hero-card {
   pointer-events: auto;
-  margin-left: 60px;
+  margin-left: 0;   /* 左側跟 Header 的 LOGO 框對齊 */
   width: 546px;
   max-width: 100%;
   padding: 32px 36px 26px;
