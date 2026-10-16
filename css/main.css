@@ -63,7 +63,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html { overflow-x: hidden; overflow-x: clip; scroll-behavior: smooth; background: var(--n-50); }   /* clip 不會讓 position: sticky 失效；舊瀏覽器退回 hidden */
 body {
-  letter-spacing: .025em;   /* 字距 +2.5%，比較好閱讀 */
+  letter-spacing: .05em;   /* 字距 +5%，比較好閱讀 */
   font-family: var(--font-tc);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
@@ -783,9 +783,9 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
 .detail-tags { color: var(--n-400); }   /* 標籤次要，跟卡片上的 # 標籤同色 */
 .detail-meta-sep { display: inline-block; width: 1px; height: 14px; margin: 0 12px; background: #c9c9c9; vertical-align: -1px; }
 .detail-divider { margin: 40px 0; height: 1px; background: #d9d9d9; }
-.detail-desc { font-size: 16px; line-height: 30px; color: var(--n-10); }
+.detail-desc { font-size: var(--fs-body); line-height: var(--lh-body); color: var(--n-10); }
 .detail-desc p { white-space: pre-line; }   /* 資料裡的 \n 顯示為換行（保留 Behance 原本的斷行） */
-.detail-desc p + p { margin-top: 16px; }
+.detail-desc p + p { margin-top: var(--lh-body); }   /* 段落間距跟首頁一致：空一行 */
 .detail-list { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
 .detail-list li { position: relative; padding-left: 16px; }
 .detail-list li::before {
