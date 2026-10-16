@@ -1152,3 +1152,40 @@ img {
   -webkit-user-select: none; user-select: none;
   -webkit-touch-callout: none;   /* iOS 長按不跳出「儲存影像」 */
 }
+
+/* === About：Selected Works 經歷 === */
+.about-works { margin-top: 160px; }
+.works-group { display: grid; grid-template-columns: 240px 1fr; gap: 0 48px; padding: 40px 0; border-bottom: 1px solid var(--n-100); }
+.works-group:first-child { padding-top: 0; }
+.works-label { display: flex; flex-direction: column; gap: 4px; }
+.works-label .zh { font-size: var(--fs-title2); line-height: var(--lh-title2); font-weight: 500; color: var(--p-300); }
+.works-label .en { font-size: 14px; line-height: 22px; color: var(--n-500); }
+.works-list { list-style: none; display: flex; flex-direction: column; gap: 20px; }
+.works-item { display: grid; grid-template-columns: 320px 1fr; gap: 4px 24px; font-size: var(--fs-body); line-height: var(--lh-body); }
+.works-client { font-weight: 500; color: var(--p-950); }
+.works-names { display: flex; flex-wrap: wrap; gap: 4px 20px; color: var(--n-500); }
+.works-names > * { display: inline-flex; align-items: center; gap: 4px; }
+.works-link { color: var(--p-500); border-bottom: 1px solid transparent; transition: color .2s, border-color .2s; }
+.works-link .i { width: 18px; height: 18px; fill: currentColor; transition: transform .2s; }
+@media (hover: hover) { .works-link:hover { color: var(--p-300); border-bottom-color: currentColor; } .works-link:hover .i { transform: translateX(3px); } }
+.works-group.is-simple .works-item { grid-template-columns: 1fr; }
+@media (max-width: 1024px) {
+  .about-works { margin-top: 120px; }
+  .works-group { grid-template-columns: 1fr; gap: 16px; padding: 32px 0; }
+  .works-item { grid-template-columns: 1fr; gap: 2px; }
+}
+@media (max-width: 600px) {
+  .about-works { margin-top: 80px; }
+  .works-group { padding: 24px 0; }
+  .works-list { gap: 16px; }
+  .works-names { gap: 2px 16px; }
+}
+
+/* === About：Info（單張圖＋文字）=== */
+.info-img { display: block; width: 100%; height: auto; border-radius: var(--radius-img); background: var(--p-100); }
+.info-block h3 .en { display: block; margin-top: 4px; font-size: 14px; line-height: 22px; letter-spacing: .08em; color: var(--n-500); }
+.info-motto { font-weight: 500; color: var(--p-500); }
+@media (max-width: 1024px) { .info-img { max-width: 480px; } }
+.info-text.info-block { display: block; }
+.about-info .info-grid { grid-template-columns: 5fr 7fr; align-items: center; }
+@media (max-width: 1024px) { .about-info .info-grid { grid-template-columns: 1fr; } }
