@@ -12,7 +12,7 @@ var SITE = {
   email:     'hello@solpoart.com',
   // 聯絡表單：到 web3forms.com 用 hello@solpoart.com 申請免費 Access Key 後貼在這裡。
   // 還沒填之前，送出時會改開使用者的郵件程式（內容自動帶入），一樣能聯絡得到
-  formKey:   '',
+  formKey:   '3a766e2f-3f50-46bb-afa2-a6872a138e95',
   copyright: 'Copyright © 2026 Po Hsu.',
   footerEgg: '歡迎來到曉山波設計',   // 游標移到 Copyright 上時出現的彩蛋文字
 };
