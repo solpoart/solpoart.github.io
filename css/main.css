@@ -501,6 +501,7 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
   align-items: start;
 }
 .block-info .pic-fake { aspect-ratio: 4 / 3; }
+.block-info-img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius-img); background: var(--p-100); }
 .block-info-text p { font-size: var(--fs-body); line-height: var(--lh-body); }
 .block-info-text p + p { margin-top: var(--lh-body); }
 
@@ -1028,7 +1029,7 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
 
   .hero-card { margin-left: 0; width: 480px; padding: 28px 32px 22px; }
   .block-info { grid-template-columns: 1fr; gap: 40px; }
-  .block-info .pic-fake { max-width: 640px; }
+  .block-info .pic-fake, .block-info-img { max-width: 640px; }
   .card-h .card-img { width: 300px; }
   .card-h-body { padding: 12px; }
   .projects-grid { gap: 32px 24px; }
