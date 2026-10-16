@@ -770,6 +770,7 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
   color: var(--n-10);
 }
 .detail-meta { margin-top: 16px; font-size: 16px; line-height: 24px; color: var(--n-10); }
+.detail-tags { color: var(--n-400); }   /* 標籤次要，跟卡片上的 # 標籤同色 */
 .detail-meta-sep { display: inline-block; width: 1px; height: 14px; margin: 0 12px; background: #c9c9c9; vertical-align: -1px; }
 .detail-divider { margin: 40px 0; height: 1px; background: #d9d9d9; }
 .detail-desc { font-size: 16px; line-height: 24px; color: var(--n-10); }

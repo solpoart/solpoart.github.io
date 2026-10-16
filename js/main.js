@@ -336,7 +336,7 @@ function initDetail() {
     '<div class="detail-body">' +
       '<h1 class="detail-title">' + esc(p.title) + '</h1>' +
       '<p class="detail-meta">類別：' + catList(p).map(esc).join('、') +
-        (tagList(p).length ? '<span class="detail-meta-sep"></span>標籤：' + tagList(p).map(esc).join('、') : '') + '</p>' +
+        (tagList(p).length ? '<span class="detail-meta-sep"></span><span class="detail-tags">標籤：' + tagList(p).map(esc).join('、') + '</span>' : '') + '</p>' +
       '<div class="detail-divider" role="presentation"></div>' +
       '<div class="detail-desc">' + p.desc.map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('') +
         (p.list ? '<ul class="detail-list">' + p.list.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' : '') +
