@@ -107,12 +107,16 @@ function renderChrome() {
 // 卡片標籤：先放大分類（與篩選按鈕一致），再放細項標籤（# 開頭）；跟大分類重複的細項不再顯示
 // 封面放大（例如照片兩側有多餘背景）：資料裡加 coverZoom: 1.1
 function zoomAttr(p) { return p.coverZoom ? ' style="--zoom:' + p.coverZoom + '"' : ''; }
+// 類別一律照篩選器（SITE_CATEGORIES）的順序排列
+function catList(p) {
+  return p.categories.slice().sort(function (a, b) { return SITE_CATEGORIES.indexOf(a) - SITE_CATEGORIES.indexOf(b); });
+}
 function tagList(p) {
   return p.tags.filter(function (t) { return p.categories.indexOf(t) < 0; });
 }
 function tagsHTML(p) {
   return '<div class="card-tags">' +
-    p.categories.map(function (c) { return '<span class="cat">' + esc(c) + '</span>'; }).join('') +
+    catList(p).map(function (c) { return '<span class="cat">' + esc(c) + '</span>'; }).join('') +
     tagList(p).map(function (t) { return '<span>' + esc(t) + '</span>'; }).join('') + '</div>';
 }
 function cardH(p) {
@@ -331,7 +335,7 @@ function initDetail() {
     '<div class="detail-hero"><img' + zoomAttr(p) + ' src="' + projectImage(p.id, p.cover) + '" alt="' + esc(p.title) + '" fetchpriority="high"></div>' +
     '<div class="detail-body">' +
       '<h1 class="detail-title">' + esc(p.title) + '</h1>' +
-      '<p class="detail-meta">類別：' + p.categories.map(esc).join('、') +
+      '<p class="detail-meta">類別：' + catList(p).map(esc).join('、') +
         (tagList(p).length ? '<span class="detail-meta-sep"></span>標籤：' + tagList(p).map(esc).join('、') : '') + '</p>' +
       '<div class="detail-divider" role="presentation"></div>' +
       '<div class="detail-desc">' + p.desc.map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('') +
