@@ -544,6 +544,14 @@ document.addEventListener('DOMContentLoaded', function () {
   // 從上一頁快取返回時恢復顯示
   window.addEventListener('pageshow', function (e) { if (e.persisted) document.body.style.opacity = '1'; });
 
+  /* ---- 圖片防右鍵儲存與拖曳（含之後才產生的圖片：專案卡片、詳情頁、燈箱） ---- */
+  document.addEventListener('contextmenu', function (e) {
+    if (e.target.closest && e.target.closest('img, .zoomable, .lightbox')) e.preventDefault();
+  });
+  document.addEventListener('dragstart', function (e) {
+    if (e.target.tagName === 'IMG') e.preventDefault();
+  });
+
   /* ---- About Service icon 動態：桌機滑入播一次；觸控裝置捲到畫面上播一次 ---- */
   var svcBlocks = document.querySelectorAll('.block-service');
   if (svcBlocks.length) {

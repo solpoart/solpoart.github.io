@@ -43,7 +43,7 @@
   --narrow:    1296px;
   --gutter:    48px;
 
-  --header-top: 60px;
+  --header-top: 44px;
   --header-h:   88px;
 
   --ease: cubic-bezier(.4, 0, .2, 1);
@@ -400,7 +400,7 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
 .hero { position: relative; }
 .hero-viewport {
   position: relative;
-  height: clamp(560px, 47.92vw, 920px);
+  height: clamp(536px, calc(47.92vw - 24px), 896px);
   overflow: hidden;
   background: var(--p-100);
 }
@@ -1138,4 +1138,11 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
   .page-404 .logo-404 img { width: 140px; height: 66px; }
   .msg-404 h1 { font-size: 64px; }
   .msg-404 p { font-size: 18px; line-height: 30px; }
+}
+
+/* === 圖片防右鍵儲存／拖曳下載（只能擋一般使用者，無法完全防止截圖或從原始碼下載） === */
+img {
+  -webkit-user-drag: none; user-drag: none;
+  -webkit-user-select: none; user-select: none;
+  -webkit-touch-callout: none;   /* iOS 長按不跳出「儲存影像」 */
 }
