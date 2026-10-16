@@ -661,8 +661,8 @@ document.addEventListener('DOMContentLoaded', function () {
         cform.reset(); setStatus('success', '已收到你的訊息，我們會盡快回覆！'); return;
       }
       var data = {
-        '公司或單位名稱': cform.company.value.trim(), '電話': cform.phone.value.trim(),
-        '聯絡信箱': cform.email.value.trim(), '需求': cform.need.value || '未選擇', '說明': cform.message.value.trim() || '（未填）'
+        '公司或單位名稱': cform.company.value.trim(), '市話/手機': cform.phone.value.trim(),
+        '聯絡信箱': cform.email.value.trim(), '需求類別': cform.need.value || '未選擇', '說明': cform.message.value.trim() || '（未填）'
       };
       if (!SITE.formKey) {   // 尚未申請表單服務：改開郵件程式
         var body = Object.keys(data).map(function (k) { return k + '：' + data[k]; }).join('\n');
