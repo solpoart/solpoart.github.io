@@ -155,7 +155,7 @@ function initHero() {
   }).join('') +
   '<div class="hero-card-wrap"><div class="container"><div class="hero-card">' +
     '<div class="hero-card-text fade"><h2 class="hero-card-title"></h2><p class="hero-card-desc"></p></div>' +
-    '<div class="hero-card-action"><div><div class="hero-card-action-pad"><a class="btn-text-icon hero-card-link" href="#">Show Detail<span class="icon-wrap">' + ICONS.arrow24 + '</span></a></div></div></div>' +
+    '<div class="hero-card-action"><div><div class="hero-card-action-pad"><a class="btn-text-icon hero-card-link" href="#">View Detail<span class="icon-wrap">' + ICONS.arrow24 + '</span></a></div></div></div>' +
   '</div></div></div>';
 
   dotsWrap.innerHTML = data.map(function (d, i) {
@@ -187,7 +187,7 @@ function initHero() {
     title.textContent = data[i].p.title;
     desc.textContent = data[i].p.summary || data[i].p.desc[0];
     link.href = 'project.html?id=' + data[i].p.id;
-    link.setAttribute('aria-label', 'Show Detail：' + data[i].p.title);
+    link.setAttribute('aria-label', 'View Detail：' + data[i].p.title);
   }
   function go(i, user) {
     i = (i + data.length) % data.length;   // 無限輪播：第一張往前接最後一張、最後一張往後接第一張
