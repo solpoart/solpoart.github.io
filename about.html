@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Roboto:wght@600&family=Roboto+Serif:opsz,wght@8..144,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/main.css?v=20261016p">
+  <link rel="stylesheet" href="css/main.css?v=20261016q">
 </head>
 <body data-page="about">
 
@@ -172,34 +172,35 @@
         <div class="form-row">
           <label class="form-field">
             <span class="form-label">公司或單位名稱<em>必填</em></span>
-            <input type="text" name="company" placeholder="例如：曉山波設計有限公司" data-label="公司或單位名稱" autocomplete="organization" required>
+            <input type="text" name="company" placeholder="曉山波設計有限公司" data-label="公司或單位名稱" autocomplete="organization" required>
             <span class="form-error" aria-live="polite"></span>
           </label>
           <label class="form-field">
             <span class="form-label">電話<em>必填</em></span>
-            <input type="tel" name="phone" placeholder="例如：02-1234-5678 或 0912-345-678" data-label="電話" autocomplete="tel" inputmode="tel" required>
+            <input type="tel" name="phone" placeholder="02-1234-5678 或 0912-345-678" data-label="電話" autocomplete="tel" inputmode="tel" required>
             <span class="form-error" aria-live="polite"></span>
           </label>
         </div>
         <div class="form-row">
           <label class="form-field">
             <span class="form-label">聯絡信箱<em>必填</em></span>
-            <input type="email" name="email" placeholder="例如：name@example.com" data-label="聯絡信箱" autocomplete="email" required>
+            <input type="email" name="email" placeholder="name@example.com" data-label="聯絡信箱" autocomplete="email" required>
             <span class="form-error" aria-live="polite"></span>
           </label>
-          <label class="form-field">
-            <span class="form-label">需求</span>
-            <span class="form-select">
-              <select name="need">
-                <option value="">請選擇</option>
-                <option>策略諮詢</option>
-                <option>設計執行</option>
-                <option>教育課程</option>
-                <option>其他</option>
-              </select>
-            </span>
+          <div class="form-field">
+            <span class="form-label" id="need-label">需求</span>
+            <div class="form-select js-select">
+              <input type="hidden" name="need" value="">
+              <button type="button" class="select-trigger is-empty" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="need-label"><span class="select-value">請選擇</span></button>
+              <ul class="select-list" role="listbox" tabindex="-1">
+                <li role="option" aria-selected="false" data-value="策略諮詢">策略諮詢</li>
+                <li role="option" aria-selected="false" data-value="設計執行">設計執行</li>
+                <li role="option" aria-selected="false" data-value="教育課程">教育課程</li>
+                <li role="option" aria-selected="false" data-value="其他">其他</li>
+              </ul>
+            </div>
             <span class="form-error"></span>
-          </label>
+          </div>
         </div>
         <label class="form-field">
           <span class="form-label">說明<span class="form-optional">選填</span></span>
@@ -222,7 +223,7 @@
 
 <div data-slot="footer"></div>
 
-<script src="js/projects-data.js?v=20261016p"></script>
-<script src="js/main.js?v=20261016p"></script>
+<script src="js/projects-data.js?v=20261016q"></script>
+<script src="js/main.js?v=20261016q"></script>
 </body>
 </html>

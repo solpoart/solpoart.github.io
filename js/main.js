@@ -575,10 +575,37 @@ document.addEventListener('DOMContentLoaded', function () {
   var cform = document.querySelector('.js-contact-form');
   if (cform) {
     var startedAt = Date.now();
-    var needSel = cform.querySelector('select[name="need"]');
-    var syncSel = function () { needSel.classList.toggle('is-empty', !needSel.value); };
-    syncSel(); needSel.addEventListener('change', syncSel);
-    cform.addEventListener('reset', function () { setTimeout(syncSel, 0); });
+    // 自訂下拉選單（原生 select 展開後的樣式改不了，所以自己做）：滑鼠、觸控、鍵盤（↑↓ Enter Esc）都能操作
+    cform.querySelectorAll('.js-select').forEach(function (box) {
+      var hidden = box.querySelector('input[type="hidden"]'), trig = box.querySelector('.select-trigger'),
+          valEl = box.querySelector('.select-value'), list = box.querySelector('.select-list'),
+          opts = [].slice.call(list.querySelectorAll('[role="option"]')), placeholder = valEl.textContent, active = -1;
+      var mark = function (i) { active = i; opts.forEach(function (o, k) { o.classList.toggle('is-active', k === i); }); };
+      var open = function () { box.classList.add('is-open'); trig.setAttribute('aria-expanded', 'true');
+        mark(Math.max(0, opts.findIndex(function (o) { return o.getAttribute('aria-selected') === 'true'; }))); };
+      var close = function () { box.classList.remove('is-open'); trig.setAttribute('aria-expanded', 'false'); };
+      var choose = function (i) {
+        opts.forEach(function (o, k) { o.setAttribute('aria-selected', k === i ? 'true' : 'false'); });
+        hidden.value = i < 0 ? '' : opts[i].dataset.value;
+        valEl.textContent = i < 0 ? placeholder : opts[i].textContent;
+        trig.classList.toggle('is-empty', i < 0);
+      };
+      trig.addEventListener('click', function () { box.classList.contains('is-open') ? close() : open(); });
+      opts.forEach(function (o, k) {
+        o.addEventListener('click', function () { choose(k); close(); trig.focus(); });
+        o.addEventListener('mousemove', function () { mark(k); });
+      });
+      trig.addEventListener('keydown', function (e) {
+        var isOpen = box.classList.contains('is-open');
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          e.preventDefault(); if (!isOpen) return open();
+          mark((active + (e.key === 'ArrowDown' ? 1 : -1) + opts.length) % opts.length);
+        } else if ((e.key === 'Enter' || e.key === ' ') && isOpen) { e.preventDefault(); choose(active); close(); }
+        else if (e.key === 'Escape' || e.key === 'Tab') close();
+      });
+      document.addEventListener('click', function (e) { if (!box.contains(e.target)) close(); });
+      cform.addEventListener('reset', function () { setTimeout(function () { choose(-1); }, 0); });
+    });
     var statusEl = cform.querySelector('.form-status');
     var setStatus = function (type, msg) { statusEl.className = 'form-status is-' + type; statusEl.textContent = msg; };
     var fieldErr = function (input, msg) {
