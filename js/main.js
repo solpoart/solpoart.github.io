@@ -450,13 +450,13 @@ function initLightbox(root) {
 /* ============================================================ */
 /* ---- About：Process 卡片按壓 3D 互動（游標所在的那一側被壓下去）----
    外層 .process-card-slot 不動、負責感應游標；內層 .process-card 才傾斜，避免傾斜後邊緣離開游標而抖動。
-   數值：傾斜 5°、下壓 1.5%、透視 1000px、跟手速度 0.25；觸控裝置與「減少動態」設定下不啟用。 */
+   數值：傾斜 2.5°、下壓 0.5%、透視 1000px、跟手速度 0.15；觸控裝置與「減少動態」設定下不啟用。 */
 function initProcessTilt() {
   var cards = document.querySelectorAll('.process-card');
   if (!cards.length) return;
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var DEG = 5, PRESS = 1.5, EASE = 0.25;
+  var DEG = 2.5, PRESS = 0.5, EASE = 0.15;
   cards.forEach(function (card) {
     var slot = document.createElement('div');
     slot.className = 'process-card-slot';
