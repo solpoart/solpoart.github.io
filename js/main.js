@@ -450,7 +450,7 @@ function initLightbox(root) {
 /* ============================================================ */
 /* ---- About：Process 卡片按壓 3D 互動（游標所在的那一側被壓下去）----
    外層 .process-card-slot 不動、負責感應游標；內層 .process-card 才傾斜，避免傾斜後邊緣離開游標而抖動。
-   數值：傾斜 2.5°、下壓 0.5%、透視 1000px、跟手速度 0.15；觸控裝置與「減少動態」設定下不啟用。 */
+   數值：傾斜 2.5°、下壓 0.5%、透視 1000px、跟手速度 0.15；陰影偏移 12px、下落 0、模糊 24px、濃度 5%；觸控裝置與「減少動態」設定下不啟用。 */
 function initProcessTilt() {
   var cards = document.querySelectorAll('.process-card');
   if (!cards.length) return;
@@ -466,6 +466,11 @@ function initProcessTilt() {
     function frame() {
       cur.x += (tgt.x - cur.x) * EASE; cur.y += (tgt.y - cur.y) * EASE; cur.p += (tgt.p - cur.p) * EASE;
       card.style.transform = 'rotateX(' + (-cur.y * DEG).toFixed(3) + 'deg) rotateY(' + (cur.x * DEG).toFixed(3) + 'deg) scale(' + (1 - cur.p * PRESS / 100).toFixed(4) + ')';
+      // 陰影偏向卡片翹起的那一側：偏移 12px、模糊 24px、濃度 5%（顏色見 css .process-card-slot）
+      card.style.setProperty('--tsx', (-cur.x * 12).toFixed(2) + 'px');
+      card.style.setProperty('--tsy', (-cur.y * 12).toFixed(2) + 'px');
+      card.style.setProperty('--tsb', (24 * cur.p).toFixed(2) + 'px');
+      card.style.setProperty('--tso', (0.05 * cur.p).toFixed(4));
       var moving = Math.abs(tgt.x - cur.x) + Math.abs(tgt.y - cur.y) + Math.abs(tgt.p - cur.p) > 0.001;
       if (moving) { raf = requestAnimationFrame(frame); } else { raf = null; if (!tgt.p) card.style.transform = ''; }
     }

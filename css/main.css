@@ -651,7 +651,11 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
 .process-item:last-child .process-line { display: none; }
 /* JS 會用 .process-card-slot 包住卡片，做按壓 3D 互動（見 main.js initProcessTilt）*/
 .process-card-slot { perspective: 1000px; min-width: 0; }
-.process-card-slot > .process-card { will-change: transform; }
+.process-card-slot > .process-card {
+  will-change: transform;
+  /* 陰影色：P-950 混入約 15% 的 P-500，帶一點點品牌藍 */
+  box-shadow: var(--tsx, 0px) var(--tsy, 0px) var(--tsb, 0px) rgba(42, 59, 73, var(--tso, 0));
+}
 .process-card {
   margin: 12px 0 12px 16px;
   padding: 24px 32px;
