@@ -110,6 +110,11 @@ function renderChrome() {
 // 卡片標籤：先放大分類（與篩選按鈕一致），再放細項標籤（# 開頭）；跟大分類重複的細項不再顯示
 // 封面放大（例如照片兩側有多餘背景）：資料裡加 coverZoom: 1.1
 function zoomAttr(p) { return p.coverZoom ? ' style="--zoom:' + p.coverZoom + '"' : ''; }
+// 卡片封面用：除了 coverZoom，也套用 cardPos（調整卡片裁切位置，例如 'center 40%'）
+function cardImgAttr(p) {
+  var st = (p.coverZoom ? '--zoom:' + p.coverZoom + ';' : '') + (p.cardPos ? 'object-position:' + p.cardPos + ';' : '');
+  return st ? ' style="' + st + '"' : '';
+}
 // 類別一律照篩選器（SITE_CATEGORIES）的順序排列
 function catList(p) {
   return p.categories.slice().sort(function (a, b) { return SITE_CATEGORIES.indexOf(a) - SITE_CATEGORIES.indexOf(b); });
@@ -124,7 +129,7 @@ function tagsHTML(p) {
 }
 function cardH(p) {
   return '<a class="card-h reveal" href="project.html?id=' + p.id + '">' +
-    '<div class="card-img"><img' + zoomAttr(p) + ' src="' + projectImage(p.id, p.cover) + '" alt="' + esc(p.title) + '" loading="lazy"></div>' +
+    '<div class="card-img"><img' + cardImgAttr(p) + ' src="' + projectImage(p.id, p.cover) + '" alt="' + esc(p.title) + '" loading="lazy"></div>' +
     '<div class="card-h-body"><div>' + tagsHTML(p) + '<h3 class="card-h-title">' + esc(p.title) + '</h3>' +
       '<p class="card-h-desc">' + esc(p.summary || p.desc[0] || '') + '</p></div>' +
     '<div class="card-h-foot"><span class="card-arrow">' + ICONS.arrow56 + '</span></div></div>' +
@@ -132,7 +137,7 @@ function cardH(p) {
 }
 function cardV(p) {
   return '<a class="card-v reveal" href="project.html?id=' + p.id + '" data-cats="' + esc(p.categories.join('|')) + '">' +
-    '<div class="card-img"><img' + zoomAttr(p) + ' src="' + projectImage(p.id, p.cover) + '" alt="' + esc(p.title) + '" loading="lazy"></div>' +
+    '<div class="card-img"><img' + cardImgAttr(p) + ' src="' + projectImage(p.id, p.cover) + '" alt="' + esc(p.title) + '" loading="lazy"></div>' +
     '<div class="card-v-body">' + tagsHTML(p) +
       '<div class="card-v-row"><h3 class="card-v-title">' + esc(p.title) + '</h3><span class="card-arrow">' + ICONS.arrow56 + '</span></div>' +
     '</div>' +
