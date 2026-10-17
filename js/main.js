@@ -255,7 +255,7 @@ function initHomeProjects() {
 }
 
 /* ---- Projects 頁：列表 + 篩選 ---- */
-var FILTER_KEY = 'solpo-projects-filter';   // 記住上次篩選（sessionStorage：關掉分頁才重置）
+var FILTER_KEY = 'solpo-projects-filter';   // 記住上次篩選（只在從專案詳情頁回到列表時沿用）
 function initProjects() {
   var grid = document.querySelector('.js-projects-grid');
   var chipsWrap = document.querySelector('.js-filter');
@@ -310,9 +310,20 @@ function initProjects() {
     history.replaceState(history.state, '', url);
     try { sessionStorage.setItem(FILTER_KEY, chip.dataset.cat); } catch (err) {}
   });
-  // 優先用網址上的 ?cat=，沒有的話用這個分頁上次選的篩選（從專案頁返回、點 Header 的 Projects 都會記得）
+  // 優先用網址上的 ?cat=（瀏覽器上一頁回來時網址會帶著）；
+  // 沒有的話，只有「從專案詳情頁回來」才沿用上次的篩選，從首頁、About 等其他頁進來一律回到「全部類別」
   var initCat = new URLSearchParams(location.search).get('cat');
-  if (initCat === null) { try { initCat = sessionStorage.getItem(FILTER_KEY); } catch (err) {} }
+  if (initCat === null) {
+    var fromDetail = false;
+    try {
+      var ref = document.referrer ? new URL(document.referrer) : null;
+      fromDetail = !!ref && ref.origin === location.origin && /\/project\.html$/.test(ref.pathname);
+    } catch (err) {}
+    try {
+      if (fromDetail) initCat = sessionStorage.getItem(FILTER_KEY);
+      else sessionStorage.removeItem(FILTER_KEY);
+    } catch (err) {}
+  }
   if (initCat) {
     var chip = chipsWrap.querySelector('.chip[data-cat="' + initCat + '"]');
     if (chip) chip.click();
