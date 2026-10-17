@@ -814,7 +814,7 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
 @media (max-width: 600px) {
   .detail-figure.has-heading:not(:first-child) { margin-top: 16px; }
   .detail-heading { font-size: 18px; line-height: 30px; margin-bottom: 12px; }
-  .detail-caption { font-size: 14px; line-height: 25.3px; margin-top: 10px; }
+  .detail-caption { font-size: 14px; line-height: 25.3px; margin-top: 10px; padding-bottom: 16px; }   /* 圖說跟下一張圖拉開，看得出圖說屬於上一張 */
 }
 .zoomable {
   display: block; width: 100%; padding: 0;
