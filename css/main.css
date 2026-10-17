@@ -893,20 +893,19 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
 .site-footer { margin-top: 200px; }
 /* 小彩蛋：游標移到 Copyright 上，淡出換成「歡迎來到曉山波設計」 */
 .footer-egg { display: inline-grid; cursor: default; -webkit-user-select: none; user-select: none; }
-/* 先淡出、再淡入（不交疊、不模糊）；新文字淡入時字距微微展開 */
+/* 先淡出、再淡入（不交疊、不模糊）；不做尺寸或字距變化 */
 .footer-egg > span { grid-area: 1 / 1; text-align: center; white-space: nowrap; }
 .footer-egg .egg-a { transition: opacity .35s cubic-bezier(.4, 0, .2, 1) .3s; }
 .footer-egg .egg-b {
   opacity: 0;
-  letter-spacing: 0;
   color: var(--p-500);
-  transition: opacity .3s cubic-bezier(.4, 0, .2, 1), letter-spacing .3s cubic-bezier(.4, 0, .2, 1);
+  transition: opacity .3s cubic-bezier(.4, 0, .2, 1);
 }
 .footer-egg.is-on .egg-a { opacity: 0; transition: opacity .3s cubic-bezier(.4, 0, .2, 1); }
-.footer-egg.is-on .egg-b { opacity: 1; letter-spacing: .12em; transition: opacity .6s cubic-bezier(.4, 0, .2, 1) .25s, letter-spacing 1.2s cubic-bezier(.22, 1, .36, 1) .25s; }
+.footer-egg.is-on .egg-b { opacity: 1; transition: opacity .6s cubic-bezier(.4, 0, .2, 1) .25s; }
 @media (hover: hover) {
   .footer-egg:hover .egg-a { opacity: 0; transition: opacity .3s cubic-bezier(.4, 0, .2, 1); }
-  .footer-egg:hover .egg-b { opacity: 1; letter-spacing: .12em; transition: opacity .6s cubic-bezier(.4, 0, .2, 1) .25s, letter-spacing 1.2s cubic-bezier(.22, 1, .36, 1) .25s; }
+  .footer-egg:hover .egg-b { opacity: 1; transition: opacity .6s cubic-bezier(.4, 0, .2, 1) .25s; }
 }
 .site-footer .container {
   height: 80px;
