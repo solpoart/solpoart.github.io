@@ -1486,4 +1486,9 @@ img {
   .works-names > .works-link:hover { scale: 1.04; }
   .contact-mail-row > a:hover { scale: 1.04; }
   .hero-dot:hover { scale: 1.25; }
+  /* 按下去：回到原本尺寸（字距也收回），做出「點下去」的手感 */
+  .site-header .header-logo:hover:active, .sns-link:hover:active, .btn-primary:hover:active, .btn-icon:hover:active,
+  .btn-text-icon:hover:active, .btn-back:hover:active, .chip:hover:active, .copy-btn:hover:active, .modal-item:hover:active,
+  .works-names > .works-link:hover:active, .contact-mail-row > a:hover:active, .hero-dot:hover:active { scale: 1; transition-duration: .1s; }
+  .header-menu .text-btn:hover:active { letter-spacing: .05em; transition-duration: .1s; }
 }
