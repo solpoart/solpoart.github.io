@@ -1429,14 +1429,14 @@ img {
 /* === Back to Top 懸浮按鈕（右下角）=== */
 .to-top {
   position: fixed; right: 24px; bottom: 24px; z-index: 250;
-  width: 56px; height: 56px; border-radius: 50%;
+  width: 48px; height: 48px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   background: var(--n-50); color: var(--p-950);
   box-shadow: 0 2px 12px rgba(42, 59, 73, .18);
   opacity: 0; visibility: hidden; transform: translateY(12px) scale(1);
   transition: opacity .3s ease, visibility .3s, transform .25s var(--ease), background .2s;
 }
-.to-top .i { width: 24px; height: 24px; }
+.to-top .i { width: 22px; height: 22px; }
 .to-top.is-shown { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
 @media (hover: hover) {
   .to-top.is-shown:hover { transform: scale(1.15); background: var(--p-100); }
@@ -1446,5 +1446,6 @@ img {
 .to-top.is-shown.is-released { transform: scale(1); transition: opacity .3s ease, visibility .3s, transform .45s cubic-bezier(.34, 1.56, .64, 1), background .2s; }
 .to-top:focus-visible { outline: 3px solid var(--p-300); outline-offset: 3px; }
 @media (max-width: 600px) {
-  .to-top { right: 16px; bottom: 16px; width: 48px; height: 48px; }
+  .to-top { right: 16px; bottom: 16px; width: 44px; height: 44px; }
+  .to-top .i { width: 20px; height: 20px; }
 }
