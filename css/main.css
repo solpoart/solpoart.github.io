@@ -536,6 +536,12 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
   color: var(--n-10);
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
+.card-h-desc {
+  margin-top: 8px;
+  font-size: var(--fs-body); line-height: var(--lh-body);
+  color: var(--n-600);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
 .card-h-foot { display: flex; justify-content: flex-end; }
 
 /* 共用卡片元素 */
@@ -1105,6 +1111,7 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
   .card-h .card-img { width: 100%; }
   .card-h-body { padding: 0 8px 4px; flex-direction: row; align-items: flex-end; }
   .card-h-foot { align-items: flex-end; }
+  .card-h-desc { -webkit-line-clamp: 3; }
   .card-arrow, .card-arrow .i { width: 44px; height: 44px; }
   .card-tags { font-size: 14px; line-height: 22px; gap: 0 10px; margin-bottom: 4px; }
 

@@ -125,7 +125,8 @@ function tagsHTML(p) {
 function cardH(p) {
   return '<a class="card-h reveal" href="project.html?id=' + p.id + '">' +
     '<div class="card-img"><img' + zoomAttr(p) + ' src="' + projectImage(p.id, p.cover) + '" alt="' + esc(p.title) + '" loading="lazy"></div>' +
-    '<div class="card-h-body"><div>' + tagsHTML(p) + '<h3 class="card-h-title">' + esc(p.title) + '</h3></div>' +
+    '<div class="card-h-body"><div>' + tagsHTML(p) + '<h3 class="card-h-title">' + esc(p.title) + '</h3>' +
+      '<p class="card-h-desc">' + esc(p.summary || p.desc[0] || '') + '</p></div>' +
     '<div class="card-h-foot"><span class="card-arrow">' + ICONS.arrow56 + '</span></div></div>' +
   '</a>';
 }
