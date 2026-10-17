@@ -31,6 +31,7 @@ var ICONS = {
   copy: '<svg class="i i-line i-24" viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="3.75" width="11" height="13.5" rx="2"/><path d="M5 8.25v10.5a2 2 0 0 0 2 2h8.25"/></svg>',
   mail: '<svg class="i i-line" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m4 7.5 8 5.5 8-5.5"/></svg>',
   menu: '<svg class="i i-line" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
+  arrowUp: '<svg class="i i-line" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>',
   close: '<svg class="i i-line" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
 };
 
@@ -497,6 +498,31 @@ function initProcessTilt() {
   });
 }
 
+/* ---- 右下角 Back to Top：往下捲超過一個畫面高才出現 ----
+   hover 放大 15%；按下時縮小；放開時彈回原本大小，同時捲回頁面頂端 */
+function initBackToTop() {
+  var btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'to-top';
+  btn.setAttribute('aria-label', '回到頁面頂端');
+  btn.innerHTML = ICONS.arrowUp;
+  document.body.appendChild(btn);
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function sync() { btn.classList.toggle('is-shown', window.scrollY > window.innerHeight * 0.8); }
+  window.addEventListener('scroll', sync, { passive: true });
+  sync();
+  btn.addEventListener('pointerdown', function () { btn.classList.remove('is-released'); btn.classList.add('is-pressing'); });
+  ['pointercancel', 'pointerleave'].forEach(function (ev) {
+    btn.addEventListener(ev, function () { btn.classList.remove('is-pressing', 'is-released'); });
+  });
+  btn.addEventListener('click', function () {
+    btn.classList.remove('is-pressing');
+    btn.classList.add('is-released');   // 放開：用回彈曲線回到原本大小
+    window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    btn.blur();
+  });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   // HTML 內的 <span data-icon="名稱"> 換成對應的 SVG
   document.querySelectorAll('[data-icon]').forEach(function (el) {
@@ -508,6 +534,7 @@ document.addEventListener('DOMContentLoaded', function () {
   initProjects();
   initDetail();
   initProcessTilt();
+  initBackToTop();
 
   /* ---- Mobile menu ---- */
   var hamburger = document.querySelector('.nav-hamburger');
