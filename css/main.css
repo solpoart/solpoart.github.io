@@ -1379,8 +1379,7 @@ img {
 @media (max-width: 1024px) { .hero--below { --hb-fs: 18px; --hb-lh: 30px; } }
 
 /* ===== Header LOGO 底色較不透明，深色或同色系圖片上也看得清楚 ===== */
-.site-header .header-logo.glass { background: rgba(250, 245, 245, .9); }
-.site-header.is-scrolled .header-logo.glass { background: rgba(250, 245, 245, .92); }
+.site-header .header-logo.glass { background: rgba(250, 245, 245, .9); }   /* 固定 90%，不隨捲動改變 */
 
 /* ===== Header 的 Contact：淡色底膠囊（P-100 70%，無陰影）===== */
 .header-menu .btn-primary {
