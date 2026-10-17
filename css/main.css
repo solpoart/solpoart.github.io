@@ -1449,3 +1449,41 @@ img {
   .to-top { right: 16px; bottom: 16px; width: 44px; height: 44px; }
   .to-top .i { width: 20px; height: 20px; }
 }
+
+/* === 全站 hover 一致：可點的東西滑過時都「微微放大」（用 scale 屬性，不影響原本的 transform 動畫）===
+   按鈕 5%、純圖示按鈕 8–10%、LOGO 3%；Header 的 About / Projects 文字改成拉開字距；
+   卡片與可放大的圖原本就有圖片放大，Back to Top 維持 15%；頁尾 copyright 彩蛋不放大 */
+.site-header .header-logo { transform-origin: left center;
+  transition: background .3s ease, border-color .3s ease, backdrop-filter .3s ease, -webkit-backdrop-filter .3s ease, scale .3s var(--ease); }
+.sns-link { transition: color var(--t), scale var(--t) var(--ease); }
+.text-btn { transition: color var(--t), letter-spacing var(--t) var(--ease); }
+.btn-primary { transition: background var(--t), color var(--t), gap var(--t), scale var(--t) var(--ease); }
+.btn-icon { transition: background var(--t), color var(--t), opacity var(--t), scale var(--t) var(--ease); }
+.btn-text-icon { transform-origin: left center; transition: gap var(--t) var(--ease), scale var(--t) var(--ease); }
+.btn-back { transform-origin: left center; }
+.btn-back:not(.is-fixed) { transition: gap var(--t), scale var(--t) var(--ease); }
+.btn-back.is-fixed {
+  transition: gap var(--t), opacity .3s ease, transform .3s ease, top .35s var(--ease),
+              background .3s ease, border-color .3s ease, backdrop-filter .3s ease, -webkit-backdrop-filter .3s ease, scale var(--t) var(--ease);
+}
+.chip { transition: background .3s ease, border-color .3s ease, transform .35s cubic-bezier(.34, 1.56, .64, 1), scale var(--t) var(--ease); }
+.copy-btn { transition: background var(--t), color var(--t), scale var(--t) var(--ease); }
+.modal-item { transform-origin: left center; transition: color var(--t), scale var(--t) var(--ease); }
+.works-names > .works-link { transform-origin: left center; transition: color .2s, border-color .2s, scale .2s var(--ease); }
+.contact-mail-row > a { display: inline-block; transform-origin: left center; transition: color var(--t), scale var(--t) var(--ease); }
+.hero-dot { transition: width .3s var(--ease), background .3s, scale var(--t) var(--ease); }
+@media (hover: hover) {
+  .site-header .header-logo:hover { scale: 1.03; }
+  .sns-link:hover { scale: 1.1; }
+  .header-menu .text-btn:hover { letter-spacing: .1em; }
+  .btn-primary:hover:not(:disabled) { scale: 1.05; }
+  .btn-icon:hover:not(:disabled) { scale: 1.08; }
+  .btn-text-icon:hover { scale: 1.05; }
+  .btn-back:hover { scale: 1.05; }
+  .chip:hover { scale: 1.05; }
+  .copy-btn:hover { scale: 1.1; }
+  .modal-item:hover { scale: 1.04; }
+  .works-names > .works-link:hover { scale: 1.04; }
+  .contact-mail-row > a:hover { scale: 1.04; }
+  .hero-dot:hover { scale: 1.25; }
+}
