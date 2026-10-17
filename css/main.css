@@ -1370,19 +1370,19 @@ img {
 .site-header .header-logo.glass { background: rgba(250, 245, 245, .9); }
 .site-header.is-scrolled .header-logo.glass { background: rgba(250, 245, 245, .92); }
 
-/* ===== Header 的 Contact：文字＋圖示按鈕（主色）===== */
-.header-menu .btn-primary,
-.header-menu .btn-primary:hover,
-.header-menu .btn-primary:active,
-.header-menu .btn-primary.is-pressed {
-  background: none !important;
+/* ===== Header 的 Contact：淡色底膠囊（P-100 70%，無陰影）===== */
+.header-menu .btn-primary {
+  background: rgba(219, 232, 238, .7);   /* P-100，70% 不透明 */
   filter: none;
-  padding: 16px 16px 16px 0;
-  color: var(--p-500);
+  padding: 12px 18px 12px 22px;
+  color: var(--p-600);
 }
 .header-menu .btn-primary .i { transition: transform var(--t) var(--ease); }
-@media (hover: hover) { .header-menu .btn-primary:hover { color: var(--p-600); } .header-menu .btn-primary:hover .i { transform: translateX(3px); } }
-.header-menu .btn-primary:active, .header-menu .btn-primary.is-pressed { color: var(--p-700); }
+@media (hover: hover) {
+  .header-menu .btn-primary:hover { background: var(--p-200); color: var(--p-700); }
+  .header-menu .btn-primary:hover .i { transform: translateX(3px); }
+}
+.header-menu .btn-primary:active, .header-menu .btn-primary.is-pressed { background: var(--p-200); color: var(--p-700); }
 
 @media (max-width: 600px) {
   .hero--below { --hb-fs: 17px; --hb-lh: 28px; }
