@@ -1432,7 +1432,7 @@ img {
   width: 48px; height: 48px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   background: var(--n-50); color: var(--p-950);
-  box-shadow: 0 2px 12px rgba(42, 59, 73, .18);
+  box-shadow: 0 4px 24px rgba(42, 59, 73, .16);   /* 模糊 24px，比較柔和擴散 */
   opacity: 0; visibility: hidden; transform: translateY(12px) scale(1);
   transition: opacity .3s ease, visibility .3s, transform .25s var(--ease), background .2s;
 }
