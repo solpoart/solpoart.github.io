@@ -832,7 +832,10 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
   display: block; width: 100%; padding: 0;
   border-radius: var(--radius-img);
   overflow: hidden;
-  cursor: zoom-in;
+  /* 游標：白色圓底＋Material Symbols「add」（40px，熱點在圓心）；不支援時退回 zoom-in */
+  cursor: url(../assets/cursor-add.png) 20 20, zoom-in;
+  cursor: -webkit-image-set(url(../assets/cursor-add.png) 1x, url(../assets/cursor-add@2x.png) 2x) 20 20, zoom-in;
+  cursor: image-set(url(../assets/cursor-add.png) 1x, url(../assets/cursor-add@2x.png) 2x) 20 20, zoom-in;
 }
 .zoomable img { transition: transform .4s var(--ease), filter .2s; }
 .zoomable:focus-visible { outline: 3px solid var(--p-300); outline-offset: 4px; }
@@ -854,7 +857,10 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
   min-height: 100%;
   display: flex; align-items: center; justify-content: center;
   padding: 88px var(--gutter);
-  cursor: zoom-out;
+  /* 點背景關閉燈箱：游標換成 Material Symbols「close」圓形徽章 */
+  cursor: url(../assets/cursor-close.png) 20 20, zoom-out;
+  cursor: -webkit-image-set(url(../assets/cursor-close.png) 1x, url(../assets/cursor-close@2x.png) 2x) 20 20, zoom-out;
+  cursor: image-set(url(../assets/cursor-close.png) 1x, url(../assets/cursor-close@2x.png) 2x) 20 20, zoom-out;
 }
 .lightbox-img {
   display: block;
