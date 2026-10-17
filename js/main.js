@@ -520,14 +520,16 @@ document.addEventListener('DOMContentLoaded', function () {
     mobileMenu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', closeMenu); });
   }
 
-  /* ---- Android 返回手勢：先關選單，不直接跳出網站 ---- */
-  history.pushState(null, '');
+  /* ---- 上一頁／Android 返回手勢：有開燈箱、選單或彈窗時先關掉它；都沒開就正常回到上一頁 ---- */
+  history.pushState(null, '');   // 多墊一筆紀錄，讓第一次「返回」先被這裡接住
   window.addEventListener('popstate', function () {
-    // 返回手勢依序關閉：燈箱 → 選單 → Contact 彈窗；都沒開就留在本頁
+    var closed = true;
     if (window.isLightboxOpen && window.isLightboxOpen()) window.closeLightbox();
     else if (mobileMenu && mobileMenu.classList.contains('open')) closeMenu();
     else if (modal && modal.classList.contains('open')) closeModal();
-    history.pushState(null, '');
+    else closed = false;
+    if (closed) history.pushState(null, '');   // 關掉了東西：再墊一筆，下次返回一樣先被接住
+    else history.back();                        // 什麼都沒開：真的回到上一頁
   });
 
   /* ---- Header：手機往下滑隱藏（累積距離 40px），往上滑顯示 ---- */
