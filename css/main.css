@@ -163,6 +163,8 @@ main { display: block; }
 
 .sns-link { color: var(--p-950); display: flex; transition: color var(--t); }
 .sns-link .i { width: 24px; height: 24px; }
+/* Header 的 IG、FB 靠近一點（整列間距 40px，社群兩顆之間縮成 24px）*/
+@media (min-width: 1025px) { .header-menu .sns-link + .sns-link { margin-left: -16px; } }
 
 /* Text button */
 .text-btn {
