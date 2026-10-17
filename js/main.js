@@ -218,11 +218,11 @@ function initHero() {
     dotsWrap.addEventListener('animationend', function (e) {
       if (e.target === dots[cur] && e.animationName === 'hero-progress') go(cur + 1);
     });
-    // 只有游標停在「說明卡片」或「切換控制列」上（代表正在閱讀或準備操作）才暫停；
-    // 游標停在大圖上不暫停，避免筆電上 Banner 佔滿畫面時永遠不輪播
+    // 只有游標停在「View Detail」或「切換控制列」上（代表準備點擊）才暫停；
+    // 停在大圖、標題、說明文字上都繼續輪播
     var hovering = false, offscreen = false;
     var syncPause = function () { root.classList.toggle('is-paused', hovering || offscreen); };
-    [card, root.querySelector('.hero-controls')].forEach(function (el) {
+    [link, root.querySelector('.hero-controls')].forEach(function (el) {
       el.addEventListener('mouseenter', function () { hovering = true; syncPause(); });
       el.addEventListener('mouseleave', function () { hovering = false; syncPause(); });
     });

@@ -1384,6 +1384,8 @@ img {
 .hero--below .hero-card-action-pad { padding: 6px 0; }
 /* 一直展開，不需要裁切；讓 hover 的圓形底完整顯示 */
 .hero--below .hero-card-action > div { overflow: visible; }
+/* View Detail 的感應範圍往外多 12px，游標靠近就暫停輪播 */
+.hero--below .hero-card-link { padding: 8px 12px; margin: -8px -12px; }
 /* 桌機：簡介寬度夠，最多一行，跟 Show Detail 的距離縮短 */
 @media (min-width: 1025px) {
   .hero--below .hero-card-desc { -webkit-line-clamp: 1; min-height: var(--lh-body); }
