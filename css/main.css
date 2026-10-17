@@ -84,6 +84,12 @@ button { font: inherit; color: inherit; cursor: pointer; border: none; backgroun
 /* SVG 圖示：顏色一律用 currentColor */
 .i { display: block; flex-shrink: 0; fill: currentColor; }
 .i-24 { width: 24px; height: 24px; }
+/* 線條圖示：不管顯示多大，線條都固定 1.75px（non-scaling-stroke），端點圓角 */
+svg.i-line, svg.i-line * { fill: none !important; }
+.i-line { stroke: currentColor; stroke-width: 1.75px; stroke-linecap: round; stroke-linejoin: round; }
+.i-line * { vector-effect: non-scaling-stroke; }
+svg.i-line .f { fill: currentColor !important; stroke: none; }
+.nav-hamburger .i, .mobile-menu-close .i { width: 32px; height: 32px; }
 .i-56 { width: 56px; height: 56px; }
 
 /* === 3. LAYOUT === */
@@ -833,9 +839,9 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
   border-radius: var(--radius-img);
   overflow: hidden;
   /* 游標：跟燈箱關閉鈕同規格（N-50 圓底、P-950 細線 Material Symbols「add」，40px，熱點在圓心）；不支援時退回 zoom-in */
-  cursor: url(../assets/cursor-add.png?v=2) 20 20, zoom-in;
-  cursor: -webkit-image-set(url(../assets/cursor-add.png?v=2) 1x, url(../assets/cursor-add@2x.png?v=2) 2x) 20 20, zoom-in;
-  cursor: image-set(url(../assets/cursor-add.png?v=2) 1x, url(../assets/cursor-add@2x.png?v=2) 2x) 20 20, zoom-in;
+  cursor: url(../assets/cursor-add.png?v=3) 20 20, zoom-in;
+  cursor: -webkit-image-set(url(../assets/cursor-add.png?v=3) 1x, url(../assets/cursor-add@2x.png?v=3) 2x) 20 20, zoom-in;
+  cursor: image-set(url(../assets/cursor-add.png?v=3) 1x, url(../assets/cursor-add@2x.png?v=3) 2x) 20 20, zoom-in;
 }
 .zoomable img { transition: transform .4s var(--ease), filter .2s; }
 .zoomable:focus-visible { outline: 3px solid var(--p-300); outline-offset: 4px; }
@@ -858,9 +864,9 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
   display: flex; align-items: center; justify-content: center;
   padding: 88px var(--gutter);
   /* 點背景關閉燈箱：游標換成 Material Symbols「close」圓形徽章 */
-  cursor: url(../assets/cursor-close.png?v=2) 20 20, zoom-out;
-  cursor: -webkit-image-set(url(../assets/cursor-close.png?v=2) 1x, url(../assets/cursor-close@2x.png?v=2) 2x) 20 20, zoom-out;
-  cursor: image-set(url(../assets/cursor-close.png?v=2) 1x, url(../assets/cursor-close@2x.png?v=2) 2x) 20 20, zoom-out;
+  cursor: url(../assets/cursor-close.png?v=3) 20 20, zoom-out;
+  cursor: -webkit-image-set(url(../assets/cursor-close.png?v=3) 1x, url(../assets/cursor-close@2x.png?v=3) 2x) 20 20, zoom-out;
+  cursor: image-set(url(../assets/cursor-close.png?v=3) 1x, url(../assets/cursor-close@2x.png?v=3) 2x) 20 20, zoom-out;
 }
 .lightbox-img {
   display: block;
@@ -1292,7 +1298,7 @@ img {
 .select-trigger.is-empty { color: var(--n-400); }
 .select-trigger::after {
   content: ''; position: absolute; right: 20px; top: 26px; width: 9px; height: 9px; margin-top: -6px;
-  border-right: 1.5px solid var(--n-500); border-bottom: 1.5px solid var(--n-500);
+  border-right: 1.75px solid var(--n-500); border-bottom: 1.75px solid var(--n-500);   /* 跟全站線條圖示一致 1.75px */
   transform: rotate(45deg); transition: transform .25s var(--ease), margin-top .25s var(--ease);
 }
 .form-select.is-open .select-trigger::after { transform: rotate(-135deg); margin-top: -1px; }
@@ -1321,7 +1327,7 @@ img {
 .select-list [role="option"][aria-selected="true"] { color: var(--p-500); font-weight: 500; }
 .select-list [role="option"][aria-selected="true"]::after {
   content: ''; position: absolute; right: 16px; top: 50%; width: 5px; height: 10px; margin-top: -7px;
-  border-right: 2px solid var(--p-500); border-bottom: 2px solid var(--p-500); transform: rotate(45deg);
+  border-right: 1.75px solid var(--p-500); border-bottom: 1.75px solid var(--p-500); transform: rotate(45deg);
 }
 .form-error { min-height: 0; font-size: 14px; line-height: 20px; color: #b4574a; }
 .form-error:empty { display: none; }
