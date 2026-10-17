@@ -448,6 +448,39 @@ function initLightbox(root) {
 }
 
 /* ============================================================ */
+/* ---- About：Process 卡片按壓 3D 互動（游標所在的那一側被壓下去）----
+   外層 .process-card-slot 不動、負責感應游標；內層 .process-card 才傾斜，避免傾斜後邊緣離開游標而抖動。
+   數值：傾斜 5°、下壓 1.5%、透視 1000px、跟手速度 0.25；觸控裝置與「減少動態」設定下不啟用。 */
+function initProcessTilt() {
+  var cards = document.querySelectorAll('.process-card');
+  if (!cards.length) return;
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var DEG = 5, PRESS = 1.5, EASE = 0.25;
+  cards.forEach(function (card) {
+    var slot = document.createElement('div');
+    slot.className = 'process-card-slot';
+    card.parentNode.insertBefore(slot, card);
+    slot.appendChild(card);
+    var cur = { x: 0, y: 0, p: 0 }, tgt = { x: 0, y: 0, p: 0 }, raf = null;
+    function frame() {
+      cur.x += (tgt.x - cur.x) * EASE; cur.y += (tgt.y - cur.y) * EASE; cur.p += (tgt.p - cur.p) * EASE;
+      card.style.transform = 'rotateX(' + (-cur.y * DEG).toFixed(3) + 'deg) rotateY(' + (cur.x * DEG).toFixed(3) + 'deg) scale(' + (1 - cur.p * PRESS / 100).toFixed(4) + ')';
+      var moving = Math.abs(tgt.x - cur.x) + Math.abs(tgt.y - cur.y) + Math.abs(tgt.p - cur.p) > 0.001;
+      if (moving) { raf = requestAnimationFrame(frame); } else { raf = null; if (!tgt.p) card.style.transform = ''; }
+    }
+    function kick() { if (!raf) raf = requestAnimationFrame(frame); }
+    slot.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      var r = slot.getBoundingClientRect();
+      tgt.x = ((e.clientX - r.left) / r.width - 0.5) * 2;
+      tgt.y = ((e.clientY - r.top) / r.height - 0.5) * 2;
+      tgt.p = 1; kick();
+    });
+    slot.addEventListener('pointerleave', function () { tgt.x = 0; tgt.y = 0; tgt.p = 0; kick(); });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   // HTML 內的 <span data-icon="名稱"> 換成對應的 SVG
   document.querySelectorAll('[data-icon]').forEach(function (el) {
@@ -458,6 +491,7 @@ document.addEventListener('DOMContentLoaded', function () {
   initHomeProjects();
   initProjects();
   initDetail();
+  initProcessTilt();
 
   /* ---- Mobile menu ---- */
   var hamburger = document.querySelector('.nav-hamburger');

@@ -649,6 +649,9 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
 }
 .process-line { width: 2px; flex: 1; margin-top: 6px; background: var(--n-100); }
 .process-item:last-child .process-line { display: none; }
+/* JS 會用 .process-card-slot 包住卡片，做按壓 3D 互動（見 main.js initProcessTilt）*/
+.process-card-slot { perspective: 1000px; min-width: 0; }
+.process-card-slot > .process-card { will-change: transform; }
 .process-card {
   margin: 12px 0 12px 16px;
   padding: 24px 32px;
