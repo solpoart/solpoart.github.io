@@ -1451,10 +1451,10 @@ img {
 }
 
 /* === 全站 hover 一致：可點的東西滑過時都「微微放大」（用 scale 屬性，不影響原本的 transform 動畫）===
-   按鈕 5%、純圖示按鈕 8–10%、LOGO 3%；Header 的 About / Projects 文字改成拉開字距；
+   按鈕 5%、純圖示按鈕 8–10%、LOGO（外框不動，框內圖案）5%；Header 的 About / Projects 文字改成拉開字距；
    卡片與可放大的圖原本就有圖片放大，Back to Top 維持 15%；頁尾 copyright 彩蛋不放大 */
-.site-header .header-logo { transform-origin: left center;
-  transition: background .3s ease, border-color .3s ease, backdrop-filter .3s ease, -webkit-backdrop-filter .3s ease, scale .3s var(--ease); }
+/* LOGO：外框不動，只有框裡的 LOGO 圖從中心放大 5% */
+.site-header .header-logo img { transition: scale .3s var(--ease); }
 .sns-link { transition: color var(--t), scale var(--t) var(--ease); }
 .text-btn { transition: color var(--t), letter-spacing var(--t) var(--ease); }
 .btn-primary { transition: background var(--t), color var(--t), gap var(--t), scale var(--t) var(--ease); }
@@ -1473,7 +1473,7 @@ img {
 .contact-mail-row > a { display: inline-block; transform-origin: left center; transition: color var(--t), scale var(--t) var(--ease); }
 .hero-dot { transition: width .3s var(--ease), background .3s, scale var(--t) var(--ease); }
 @media (hover: hover) {
-  .site-header .header-logo:hover { scale: 1.03; }
+  .site-header .header-logo:hover img { scale: 1.05; }
   .sns-link:hover { scale: 1.1; }
   .header-menu .text-btn:hover { letter-spacing: .1em; }
   .btn-primary:hover:not(:disabled) { scale: 1.05; }
@@ -1487,7 +1487,7 @@ img {
   .contact-mail-row > a:hover { scale: 1.04; }
   .hero-dot:hover { scale: 1.25; }
   /* 按下去：回到原本尺寸（字距也收回），做出「點下去」的手感 */
-  .site-header .header-logo:hover:active, .sns-link:hover:active, .btn-primary:hover:active, .btn-icon:hover:active,
+  .site-header .header-logo:hover:active img, .sns-link:hover:active, .btn-primary:hover:active, .btn-icon:hover:active,
   .btn-text-icon:hover:active, .btn-back:hover:active, .chip:hover:active, .copy-btn:hover:active, .modal-item:hover:active,
   .works-names > .works-link:hover:active, .contact-mail-row > a:hover:active, .hero-dot:hover:active { scale: 1; transition-duration: .1s; }
   .header-menu .text-btn:hover:active { letter-spacing: .05em; transition-duration: .1s; }
