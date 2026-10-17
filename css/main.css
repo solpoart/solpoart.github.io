@@ -776,7 +776,7 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
 .detail-title {
   font-weight: 700;
   font-size: var(--fs-title1);
-  line-height: var(--lh-title1);
+  line-height: 1.3;   /* 長標題折行時兩行不要太開（56px → 約 73px） */
   color: var(--n-10);
 }
 .detail-meta { margin-top: 16px; font-size: 16px; line-height: 30px; color: var(--n-10); }
