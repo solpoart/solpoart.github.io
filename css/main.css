@@ -1241,6 +1241,18 @@ img {
 .info-text.info-block { display: block; }
 .about-info .info-grid { grid-template-columns: 5fr 7fr; align-items: start; }
 @media (max-width: 1024px) { .about-info .info-grid { grid-template-columns: 1fr; } }
+/* About Info 文字較長：桌機（左右兩欄）捲動時左側圖片固定在畫面上（sticky），跟返回按鈕對齊 Header 下方；
+   Header 往下捲隱藏時一起往上補位。畫面太矮時圖片高度縮到畫面內（裁切而不變形）*/
+@media (min-width: 1025px) {
+  .about-info .info-img {
+    position: sticky;
+    top: calc(var(--header-top) + var(--header-h) + 24px);
+    max-height: calc(100vh - var(--header-top) - var(--header-h) - 48px);
+    object-fit: cover;
+    transition: opacity .55s cubic-bezier(.22,1,.36,1), transform .55s cubic-bezier(.22,1,.36,1), top .35s var(--ease);
+  }
+  body.header-hidden .about-info .info-img { top: var(--header-top); }
+}
 
 /* === Header：所有尺寸往下捲都會隱藏，往上捲再出現（原本只有手機）=== */
 .site-header.nav-hidden { transform: translateY(calc(-1 * (var(--header-top) + var(--header-h) + 24px))); }
