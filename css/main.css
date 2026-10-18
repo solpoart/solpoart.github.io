@@ -814,9 +814,9 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
 }
 .detail-body { width: min(640px, 100%); margin: 40px auto 0; }
 .detail-title {
-  font-weight: 700;
-  font-size: var(--fs-title1);
-  line-height: 1.3;   /* 長標題折行時兩行不要太開（56px → 約 73px） */
+  font-weight: 600;   /* 2026-10-18：700 → 600（project.html 另外載入 Noto Sans TC 600） */
+  font-size: calc(var(--fs-title1) * .8);   /* Title 1 縮小 20%：桌機 56 → 44.8px、小桌機 44 → 35.2px、手機 30 → 24px */
+  line-height: 1.3;   /* 長標題折行時兩行不要太開 */
   color: var(--n-10);
 }
 .detail-meta { margin-top: 16px; font-size: 16px; line-height: 30px; color: var(--n-10); }
