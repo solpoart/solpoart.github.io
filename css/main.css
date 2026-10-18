@@ -387,6 +387,10 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
   line-height: 1.2;
   color: var(--p-200);
 }
+/* 標題旁有 See More 時：標題往下移，讓文字基線跟 See More 對齊；按鈕與分隔線位置不變，
+   標題的字尾（j、g 等）可以蓋到分隔線。
+   位移量 = 標題基線以下的高度（約 .2625em）− 按鈕基線以下的高度（5px） */
+.title-bar:has(> .btn-text-icon) h2 { position: relative; top: calc(.2625em - 5px); }
 
 /* === 7. PLACEHOLDER（Pic_Fake：之後要補圖的位置）=== */
 .pic-fake {
