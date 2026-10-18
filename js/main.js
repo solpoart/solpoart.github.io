@@ -404,6 +404,36 @@ function initDetail() {
   var markTall = function () { if (!p.coverPos && heroImg.naturalHeight / heroImg.naturalWidth > 1.2) heroImg.classList.add('is-tall'); };
   if (heroImg.complete) markTall(); else heroImg.addEventListener('load', markTall);
   initLightbox(root);
+  initHeroExpand(root.querySelector('.detail-hero'));
+}
+
+/* ---- 詳情頁 Cover：往下捲時從內容寬度逐漸擴展到整個畫面寬，往上捲回原狀 ----
+   高度固定在原本的大小（圖片 object-fit: cover 重新裁切），下方內容不會跟著跳動；
+   捲動 0 → EXPAND_DIST px 對應進度 0 → 1，圓角同步收成直角 */
+function initHeroExpand(hero) {
+  if (!hero || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var EXPAND_DIST = 320;
+  var ticking = false;
+  function measure() {
+    hero.classList.remove('is-expandable');
+    hero.style.removeProperty('--p');
+    var baseW = hero.parentElement.clientWidth;
+    hero.style.setProperty('--base-w', baseW + 'px');
+    hero.style.setProperty('--full-w', document.documentElement.clientWidth + 'px');
+    hero.style.setProperty('--hero-h', hero.offsetHeight + 'px');
+    hero.classList.add('is-expandable');
+    update();
+  }
+  function update() {
+    ticking = false;
+    var prog = Math.min(1, Math.max(0, window.scrollY / EXPAND_DIST));
+    hero.style.setProperty('--p', prog.toFixed(4));
+  }
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  window.addEventListener('resize', measure);
+  measure();
 }
 
 /* ---- 燈箱：詳情頁圖片點擊放大 ----

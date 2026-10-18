@@ -803,6 +803,15 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
 }
 .detail-hero img { width: 100%; height: 100%; object-fit: cover; transform: scale(var(--zoom, 1)); }
 .detail-hero img.is-tall { object-position: center top; }   /* 直式長圖（例如網頁設計）大圖區顯示最上方 */
+/* 往下捲時 Cover 擴展到整個畫面寬（js：initHeroExpand 設定 --p 0→1、--base-w、--full-w、--hero-h） */
+.detail-hero.is-expandable {
+  --p: 0;
+  aspect-ratio: auto;
+  height: var(--hero-h);
+  width: calc(var(--base-w) + (var(--full-w) - var(--base-w)) * var(--p));
+  margin-left: calc((var(--base-w) - var(--full-w)) / 2 * var(--p));
+  border-radius: calc(var(--radius-img) * (1 - var(--p)));
+}
 .detail-body { width: min(640px, 100%); margin: 40px auto 0; }
 .detail-title {
   font-weight: 700;
@@ -1396,6 +1405,17 @@ img {
 .hero--below { --hb-fs: 20px; --hb-lh: 32px; }
 /* 圖片高度比原本矮 72px，讓第一個畫面就看得到下方的 Show Detail */
 @media (min-width: 601px) { .hero--below .hero-viewport { height: clamp(464px, calc(47.92vw - 96px), 824px); } }
+/* 圖片底部淡成背景色（N-50），消除圖片與下方說明之間的硬邊；多段色標模擬 ease 曲線，避免色帶 */
+.hero--below .hero-viewport::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+  height: 140px; pointer-events: none;
+  background: linear-gradient(to bottom,
+    rgba(250, 245, 245, 0) 0%, rgba(250, 245, 245, .03) 10%, rgba(250, 245, 245, .1) 20%,
+    rgba(250, 245, 245, .22) 30%, rgba(250, 245, 245, .37) 40%, rgba(250, 245, 245, .53) 50%,
+    rgba(250, 245, 245, .68) 60%, rgba(250, 245, 245, .81) 70%, rgba(250, 245, 245, .91) 80%,
+    rgba(250, 245, 245, .97) 90%, var(--n-50) 100%);
+}
+@media (max-width: 600px) { .hero--below .hero-viewport::after { height: 96px; } }
 .hero--below .hero-card-title { font-size: var(--hb-fs); line-height: var(--hb-lh); }
 .hero--below .hero-card-desc {
   color: var(--n-600);
