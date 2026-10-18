@@ -409,10 +409,11 @@ function initDetail() {
 
 /* ---- 詳情頁 Cover：往下捲時從內容寬度逐漸擴展到整個畫面寬，往上捲回原狀 ----
    高度固定在原本的大小（圖片 object-fit: cover 重新裁切），下方內容不會跟著跳動；
-   捲動 0 → EXPAND_DIST px 對應進度 0 → 1，圓角同步收成直角 */
+   捲動距離 0 → dist 對應進度 0 → 1，圓角同步收成直角；dist = Cover 高度的一半、最多 320px
+   （手機 Cover 較矮，約捲 135px 就擴展完，圖片還在畫面上） */
 function initHeroExpand(hero) {
   if (!hero || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var EXPAND_DIST = 320;
+  var MAX_DIST = 320, dist = MAX_DIST;
   var ticking = false;
   function measure() {
     hero.classList.remove('is-expandable');
@@ -421,12 +422,13 @@ function initHeroExpand(hero) {
     hero.style.setProperty('--base-w', baseW + 'px');
     hero.style.setProperty('--full-w', document.documentElement.clientWidth + 'px');
     hero.style.setProperty('--hero-h', hero.offsetHeight + 'px');
+    dist = Math.min(MAX_DIST, hero.offsetHeight / 2);
     hero.classList.add('is-expandable');
     update();
   }
   function update() {
     ticking = false;
-    var prog = Math.min(1, Math.max(0, window.scrollY / EXPAND_DIST));
+    var prog = Math.min(1, Math.max(0, window.scrollY / dist));
     hero.style.setProperty('--p', prog.toFixed(4));
   }
   window.addEventListener('scroll', function () {
