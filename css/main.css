@@ -785,7 +785,7 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
   transition: height .3s var(--ease), background .3s;
 }
 .info-progress span.is-active { height: 48px; background: var(--p-300); }
-.info-block h3 {
+.info-block h3, .block-info-text h3 {   /* 首頁 About 的「曉山波設計 SOLPO DESIGN」沿用 About 頁 Info 的標題樣式 */
   font-weight: 500; font-size: var(--fs-title2); line-height: var(--lh-title2);
   color: var(--p-300);
   margin-bottom: 16px;
@@ -1230,7 +1230,7 @@ img {
 
 /* === About：Info（單張圖＋文字）=== */
 .info-img { display: block; width: 100%; height: auto; border-radius: var(--radius-img); background: var(--p-100); }
-.info-block h3 .en { display: block; margin-top: 4px; font-size: 14px; line-height: 22px; letter-spacing: .08em; color: var(--n-500); }
+.info-block h3 .en, .block-info-text h3 .en { display: block; margin-top: 4px; font-size: 14px; line-height: 22px; letter-spacing: .08em; color: var(--n-500); }
 .info-block p.info-motto {   /* 引言樣式：左側品牌色細線＋深色文字，避免被誤認為連結 */
   margin-top: 40px; padding: 4px 0 4px 20px;
   border-left: 3px solid var(--p-300);
