@@ -1676,3 +1676,9 @@ img {
 @media (hover: hover) and (min-width: 601px) and (prefers-reduced-motion: reduce) {
   .lightbox-prev:hover .nav-dot, .lightbox-next:hover .nav-dot { translate: none; }
 }
+
+/* === 詳情頁長條圖（2026-10-19）===
+   高 / 寬 > 2 的圖（書籤、網頁長圖、型錄）在頁面上等比縮小、置中，高度最多 85% 畫面（上限 900px），整張一眼看完；
+   點進燈箱才用長條大圖上下捲動看細節 */
+.detail-images .zoomable.is-long { width: fit-content; max-width: 100%; margin-inline: auto; }
+.detail-images .zoomable.is-long img { width: auto; max-width: 100%; max-height: min(85vh, 900px); max-height: min(85svh, 900px); }

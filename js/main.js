@@ -718,8 +718,16 @@ function markImageLoading(scope) {
     im.addEventListener('error', done, { once: true });
   });
 }
+// 詳情頁的長條圖（高 / 寬 > 2）：頁面上等比縮小、置中，整張一眼看完；點進燈箱才用長條大圖上下捲動看細節
+function markLongImages(scope) {
+  (scope || document).querySelectorAll('.detail-images .zoomable img').forEach(function (im) {
+    var check = function () { if (im.naturalWidth && im.naturalHeight / im.naturalWidth > LONG_RATIO) im.parentNode.classList.add('is-long'); };
+    if (im.complete && im.naturalWidth) check(); else im.addEventListener('load', check, { once: true });
+  });
+}
 document.addEventListener('DOMContentLoaded', function () { setTimeout(function () {   // 等主程式把頁面內容畫好再處理
   markImageLoading();
+  markLongImages();
   var loader = document.querySelector('.page-loader');
   if (loader) { loader.classList.add('is-done'); setTimeout(function () { loader.remove(); }, 500); }
 }, 0); });
