@@ -409,11 +409,11 @@ function initDetail() {
 
 /* ---- 詳情頁 Cover：往下捲時從內容寬度逐漸擴展到整個畫面寬，往上捲回原狀 ----
    高度固定在原本的大小（圖片 object-fit: cover 重新裁切），下方內容不會跟著跳動；
-   捲動距離 0 → dist 對應進度 0 → 1，圓角同步收成直角；dist = Cover 高度的一半、最多 320px
+   捲動距離 0 → dist 對應進度 0 → 1，圓角同步收成直角；dist = Cover 高度的一半、最多 278px
    （手機 Cover 較矮，約捲 135px 就擴展完，圖片還在畫面上） */
 function initHeroExpand(hero) {
   if (!hero || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var MAX_DIST = 320, dist = MAX_DIST;
+  var MAX_DIST = 278, dist = MAX_DIST;   // 桌機：原本 320px，速度加快 15%（320 ÷ 1.15 ≈ 278）
   var ticking = false;
   function measure() {
     hero.classList.remove('is-expandable');
