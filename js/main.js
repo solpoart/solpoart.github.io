@@ -442,19 +442,51 @@ function initHeroExpand(hero) {
    一般圖片：完整比例塞進畫面（以可視範圍為準）
    長形圖片（高 / 寬 > 2，例如網頁長圖、書籤、型錄）：以寬度為主等比例顯示，上下滑動瀏覽 */
 var LONG_RATIO = 2;
+// 燈箱左右切換用 arrow（跟游標的 ← → 同一種），不用 chevron
+var LB_ARROW_L = '<svg class="i i-line" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>';
 function initLightbox(root) {
-  var btns = root.querySelectorAll('.zoomable');
+  var btns = Array.prototype.slice.call(root.querySelectorAll('.zoomable'));
   if (!btns.length) return;
+  // 每張圖的資料：圖說（原本 figcaption 的 HTML）、所屬小標題（往前找最近的一個）
+  var items = [], currentHeading = '';
+  btns.forEach(function (b) {
+    var fig = b.closest('.detail-figure');
+    var h = fig && fig.querySelector('.detail-heading');
+    if (h) currentHeading = h.textContent;
+    var cap = fig && fig.querySelector('.detail-caption');
+    items.push({ btn: b, fig: fig, heading: currentHeading, caption: cap ? cap.innerHTML : '' });
+  });
+  var total = items.length;
+
   document.body.insertAdjacentHTML('beforeend',
     '<div class="lightbox" role="dialog" aria-modal="true" aria-label="圖片檢視" hidden>' +
       '<button class="btn-icon lightbox-close" type="button" aria-label="關閉圖片檢視">' + ICONS.close + '</button>' +
-      '<div class="lightbox-stage"><img class="lightbox-img" alt=""></div>' +
+      '<div class="lightbox-stage">' +
+        '<figure class="lightbox-figure"><p class="lightbox-heading" aria-live="polite"></p><div class="lightbox-imgwrap"><img class="lightbox-img" alt=""><span class="lb-spinner"><svg class=\'tail-spin \' viewBox=\'0 0 38 38\' aria-hidden=\'true\'><defs><linearGradient id=\'ts-lb\' x1=\'8.042%\' y1=\'0%\' x2=\'65.682%\' y2=\'23.865%\'><stop stop-color=\'currentColor\' stop-opacity=\'0\' offset=\'0%\'/><stop stop-color=\'currentColor\' stop-opacity=\'.631\' offset=\'63.146%\'/><stop stop-color=\'currentColor\' offset=\'100%\'/></linearGradient></defs><g fill=\'none\' fill-rule=\'evenodd\'><g transform=\'translate(1 1)\'><g class=\'ts-rot\'><path d=\'M36 18c0-9.94-8.06-18-18-18\' stroke=\'url(#ts-lb)\' stroke-width=\'2\'/><circle fill=\'currentColor\' cx=\'36\' cy=\'18\' r=\'1\'/></g></g></g></svg></span></div>' +
+          '<figcaption class="lightbox-caption"><span class="lightbox-caption-text"></span></figcaption>' +
+          (total > 1 ? '<p class="lightbox-count" aria-live="polite"></p>' : '') +
+        '</figure>' +
+      '</div>' +
+      (total > 1 ?
+        // 左右兩側整片都是切換區（桌機）：按鈕本身撐滿半個畫面，圓形圖示只是視覺提示
+        '<button class="lightbox-nav lightbox-prev" type="button" aria-label="上一張"><span class="btn-icon nav-dot">' + LB_ARROW_L + '</span></button>' +
+        '<button class="lightbox-nav lightbox-next" type="button" aria-label="下一張"><span class="btn-icon nav-dot">' + ICONS.arrow56 + '</span></button>' : '') +
     '</div>');
   var lb = document.querySelector('.lightbox');
   var stage = lb.querySelector('.lightbox-stage');
+  var fig = lb.querySelector('.lightbox-figure');
   var img = lb.querySelector('.lightbox-img');
+  var capEl = lb.querySelector('.lightbox-caption');
+  var capText = lb.querySelector('.lightbox-caption-text');
+  // 「展開／收合」按鈕放在圖說文字裡：摺起來時固定在第二行最後面（CSS 用浮動排版，文字會繞開按鈕）
+  var moreBtn = document.createElement('button');
+  moreBtn.className = 'lightbox-more'; moreBtn.type = 'button';
+  var headEl = lb.querySelector('.lightbox-heading');
+  var countEl = lb.querySelector('.lightbox-count');
+  var prevBtn = lb.querySelector('.lightbox-prev');
+  var nextBtn = lb.querySelector('.lightbox-next');
   var closeBtn = lb.querySelector('.lightbox-close');
-  var opener = null;
+  var idx = -1;
 
   function layout() {
     var long = img.naturalWidth && img.naturalHeight / img.naturalWidth > LONG_RATIO;
@@ -462,34 +494,202 @@ function initLightbox(root) {
     // 原圖寬度存成 CSS 變數，長形圖以「畫面寬、1200px、原圖寬」三者最小值顯示，不放大到糊掉
     img.style.setProperty('--natural-w', img.naturalWidth ? img.naturalWidth + 'px' : '100%');
   }
-  function open(btn) {
-    var src = btn.querySelector('img');
-    opener = btn;
-    img.src = src.currentSrc || src.src;
-    img.alt = src.alt;
-    if (img.complete) layout(); else img.onload = layout;
-    lb.hidden = false;
+  // 圖說寬度跟著圖片寬度走，所以圖片載好、視窗縮放後都要重新判斷：文字超過 2 行才放「…展開」
+  function updateMore() {
+    if (capEl.hidden || !capEl.classList.contains('is-clamped')) return;
+    if (moreBtn.parentNode) moreBtn.parentNode.removeChild(moreBtn);
+    capEl.classList.remove('has-more');
+    if (capText.scrollHeight > capText.clientHeight + 2) { capText.insertBefore(moreBtn, capText.firstChild); capEl.classList.add('has-more'); }
+  }
+  window.addEventListener('resize', function () { if (!lb.hidden) updateMore(); });
+  function srcOf(i) { var s = items[i].btn.querySelector('img'); return s.currentSrc || s.src; }
+  function preload(i) { if (i >= 0 && i < total) { var p = new Image(); p.src = srcOf(i); } }
+  function show(i) {
+    idx = i;
+    var it = items[i];
+    var s = it.btn.querySelector('img');
+    // 圖片還沒載好時顯示轉圈（150ms 內載好就不出現，避免一閃而過）
+    var wrap = img.parentNode;
+    clearTimeout(show.spinT);
+    wrap.classList.remove('is-loading');
+    show.spinT = setTimeout(function () { if (!img.complete || !img.naturalWidth) wrap.classList.add('is-loading'); }, 150);
+    img.onload = function () { clearTimeout(show.spinT); wrap.classList.remove('is-loading'); layout(); requestAnimationFrame(updateMore); };
+    img.alt = s.alt;
+    var url = srcOf(i);
+    img.src = url; if (img.complete) img.onload();
+    // 圖說超過 2 行先摺起來，按「展開」看完整內容；內容很長時燈箱可以往下捲
+    capText.innerHTML = it.caption;
+    capEl.hidden = !it.caption;
+    capEl.classList.add('is-clamped');
+    capEl.classList.remove('has-more');
+    moreBtn.setAttribute('aria-expanded', 'false');
+    moreBtn.textContent = '…展開';
+    if (it.caption) requestAnimationFrame(updateMore);
+    lb.classList.toggle('has-caption', !!it.caption);
+    headEl.textContent = it.heading;
+    headEl.hidden = !it.heading;
+    lb.classList.toggle('has-heading', !!it.heading);
+    if (countEl) countEl.textContent = (i + 1) + ' / ' + total;
+    if (prevBtn) { prevBtn.disabled = i === 0; nextBtn.disabled = i === total - 1; }
     lb.scrollTop = 0;
-    document.body.style.overflow = 'hidden';
+    preload(i + 1); preload(i - 1);
+  }
+  function go(step) {
+    var n = idx + step;
+    if (n < 0 || n >= total || lb.hidden) return;
+    fig.classList.add('is-switching');
+    setTimeout(function () { show(n); fig.classList.remove('is-switching'); }, 140);
+  }
+  // 燈箱開著時鎖住背景頁面：滑鼠滾輪、觸控板、方向鍵上下、空白鍵、PageUp/PageDown 都不會再捲動後面的頁面
+  // （網站的捲動容器是 html，只鎖 body 擋不住；鎖住後補上捲軸寬度，避免 Windows 上畫面左右跳一下）
+  function lockPage(on) {
+    var html = document.documentElement;
+    if (on) {
+      var sbw = window.innerWidth - html.clientWidth;
+      html.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+      if (sbw > 0) html.style.paddingRight = sbw + 'px';
+    } else {
+      html.style.overflow = ''; html.style.paddingRight = '';
+      document.body.style.overflow = '';
+    }
+  }
+  function open(i) {
+    // 開燈箱時，頁面上還沒載入的圖片一起在背景載入，關閉時版面高度才會正確、不會一邊捲一邊跳
+    items.forEach(function (it) { var im = it.btn.querySelector('img'); if (im && im.loading === 'lazy') im.loading = 'eager'; });
+    show(i);
+    lb.hidden = false;
+    lockPage(true);
     requestAnimationFrame(function () { lb.classList.add('open'); });
     closeBtn.focus({ preventScroll: true });
   }
   function close() {
     if (lb.hidden) return;
     lb.classList.remove('open');
-    document.body.style.overflow = '';
+    lockPage(false);
+    // 回到頁面上「最後看的那張圖」的位置，前後的文字都在眼前，可以接著往下讀
+    var target = items[idx];
+    // 燈箱淡出時（頁面還被蓋住）先瞬間移到目標附近，淡出後再慢慢捲完最後一小段
+    // 頁面上那張圖如果還沒載入（lazy loading，高度還不對），先叫它載入：燈箱已經載過，會直接從快取拿到
+    var pageImg = target && target.btn.querySelector('img');
+    var go = function () {
+      var targetY = scrollPrepare(target.fig);
+      setTimeout(function () { scrollAnimate(function () { return scrollTargetOf(target.fig); }); target.btn.focus({ preventScroll: true }); }, 250);
+    };
+    if (target) {
+      if (pageImg && !(pageImg.complete && pageImg.naturalWidth)) {
+        pageImg.loading = 'eager';
+        var done = false, once = function () { if (!done) { done = true; go(); } };
+        pageImg.addEventListener('load', once, { once: true });
+        setTimeout(once, 200);   // 最多等 200ms，等不到就照目前的版面先走
+      } else go();
+    }
     setTimeout(function () { lb.hidden = true; img.removeAttribute('src'); }, 250);
-    if (opener) opener.focus({ preventScroll: true });
   }
   window.closeLightbox = close;
   window.isLightboxOpen = function () { return !lb.hidden && lb.classList.contains('open'); };
 
-  btns.forEach(function (b) { b.addEventListener('click', function () { open(b); }); });
+  items.forEach(function (it, i) { it.btn.addEventListener('click', function () { open(i); }); });
   closeBtn.addEventListener('click', close);
-  // 點圖片以外的深色區域也可以關閉
-  lb.addEventListener('click', function (e) { if (e.target === lb || e.target === stage) close(); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+  moreBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var open = capEl.classList.toggle('is-clamped') === false;
+    moreBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    moreBtn.textContent = open ? '收合' : '…展開';
+  });
+  if (prevBtn) {
+    prevBtn.addEventListener('click', function (e) { e.stopPropagation(); go(-1); });
+    nextBtn.addEventListener('click', function (e) { e.stopPropagation(); go(1); });
+  }
+  // 不再「點背景關閉」：背景左右兩側是切換區，關閉改用右上角 ×、Esc 鍵或瀏覽器返回
+  document.addEventListener('keydown', function (e) {
+    if (lb.hidden) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+    else if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', ' ', 'Home', 'End'].indexOf(e.key) > -1) {
+      // 上下類按鍵只捲動燈箱本身（長形圖、展開的長圖說），不會動到背景頁面
+      e.preventDefault();
+      var step = { ArrowUp: -80, ArrowDown: 80, PageUp: -lb.clientHeight * .8, PageDown: lb.clientHeight * .8, ' ': lb.clientHeight * .8 }[e.key];
+      if (e.key === 'Home') lb.scrollTo({ top: 0, behavior: 'smooth' });
+      else if (e.key === 'End') lb.scrollTo({ top: lb.scrollHeight, behavior: 'smooth' });
+      else lb.scrollBy({ top: step, behavior: 'smooth' });
+    }
+  });
+  // 手機：左右滑動切換（垂直滑動留給長形圖捲動）
+  var tx = 0, ty = 0;
+  lb.addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  lb.addEventListener('touchend', function (e) {
+    var dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) go(dx < 0 ? 1 : -1);
+  }, { passive: true });
 }
+
+/* ---- 燈箱關閉後，慢慢捲回最後看的那張圖 ----
+   距離很遠時（例如從第 1 張看到第 15 張），整段慢慢捲會滑過一大堆內容、容易暈；
+   所以燈箱還蓋著頁面時，先瞬間移到「目標前 0.6 個畫面高」的位置，
+   燈箱淡出後只捲最後這一小段：900ms、ease-in-out（起步輕、結尾緩衝）。
+   使用者中途自己捲動或按鍵就停止；系統開「減少動態效果」時直接定位、不做動畫 */
+// 對齊點：圖片頂端往下 min(圖高的一半, 320px, 畫面高 35%) 的位置，移到畫面正中間
+// → 短圖剛好置中；長圖則露出上半段，看得出就是剛剛在燈箱裡看的那張
+function scrollTargetOf(el) {
+  var media = el.querySelector('.zoomable') || el;
+  var rect = media.getBoundingClientRect();
+  var anchor = Math.min(rect.height / 2, 320, window.innerHeight * 0.35);
+  var y = window.scrollY + rect.top + anchor - window.innerHeight / 2;
+  return Math.max(0, Math.min(y, document.documentElement.scrollHeight - window.innerHeight));
+}
+function scrollPrepare(el) {
+  var html = document.documentElement, prev = html.style.scrollBehavior;
+  html.style.scrollBehavior = 'auto';
+  var targetY = scrollTargetOf(el);
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var lead = reduce ? 0 : window.innerHeight * 0.6;
+  var dist = targetY - window.scrollY;
+  if (Math.abs(dist) > lead) window.scrollTo(0, targetY - Math.sign(dist) * lead);
+  html.style.scrollBehavior = prev;
+  return targetY;
+}
+// getTarget 每一格動畫都重新計算目標位置：上方圖片剛好載入、版面變高時，也會順順地修正到正確位置
+function scrollAnimate(getTarget) {
+  var startY = window.scrollY;
+  if (Math.abs(getTarget() - startY) < 4) return;
+  var html = document.documentElement, prev = html.style.scrollBehavior;
+  html.style.scrollBehavior = 'auto';
+  var dur = 900, t0 = null, stopped = false;
+  var evs = ['wheel', 'touchstart', 'keydown'];
+  function off() { evs.forEach(function (ev) { window.removeEventListener(ev, stop); }); html.style.scrollBehavior = prev; }
+  function stop() { stopped = true; off(); }
+  evs.forEach(function (ev) { window.addEventListener(ev, stop, { passive: true }); });
+  function ease(t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }   // easeInOutCubic
+  function step(ts) {
+    if (stopped) return;
+    if (t0 === null) t0 = ts;
+    var t = Math.min(1, (ts - t0) / dur);
+    window.scrollTo(0, startY + (getTarget() - startY) * ease(t));
+    if (t < 1) requestAnimationFrame(step); else off();
+  }
+  requestAnimationFrame(step);
+}
+
+/* ---- 載入中提示 ----
+   圖片：還沒載好時顯示淡藍底（P-100）＋由左往右掃過的柔光，載好後淡入
+   頁面：HTML 裡的 .page-loader（Tail Spin），主程式畫好頁面就淡出；網路快時 0.4 秒內就消失，不會出現 */
+function markImageLoading(scope) {
+  (scope || document).querySelectorAll('.zoomable img, .card-img img, .detail-hero img').forEach(function (im) {
+    if (im.complete && im.naturalWidth) return;
+    var box = im.parentNode;
+    box.classList.add('img-loading');
+    var done = function () { box.classList.remove('img-loading'); box.classList.add('img-loaded'); };
+    im.addEventListener('load', done, { once: true });
+    im.addEventListener('error', done, { once: true });
+  });
+}
+document.addEventListener('DOMContentLoaded', function () { setTimeout(function () {   // 等主程式把頁面內容畫好再處理
+  markImageLoading();
+  var loader = document.querySelector('.page-loader');
+  if (loader) { loader.classList.add('is-done'); setTimeout(function () { loader.remove(); }, 500); }
+}, 0); });
 
 /* ============================================================ */
 /* ---- About：Process 卡片按壓 3D 互動（游標所在的那一側被壓下去）----

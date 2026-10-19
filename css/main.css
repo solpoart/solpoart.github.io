@@ -1528,3 +1528,122 @@ img {
   .works-names > .works-link:hover:active, .contact-mail-row > a:hover:active, .hero-dot:hover:active { scale: 1; transition-duration: .1s; }
   .header-menu .text-btn:hover:active { letter-spacing: .05em; transition-duration: .1s; }
 }
+
+/* === 燈箱 v2（2026-10-19）：左右切換區、小標題、圖說（超過 2 行摺疊）、張數、載入中提示、頁面 Loader ===
+   寫在原本燈箱樣式之後，覆蓋舊的設定 */
+.lightbox-stage { flex-direction: column; padding: 96px calc(var(--gutter) + 72px) 56px; }
+.lightbox-figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 14px; max-width: 100%;
+  transition: opacity .14s ease; }
+.lightbox-figure.is-switching { opacity: 0; }
+.lightbox-imgwrap { position: relative; max-width: 100%; display: flex; justify-content: center; min-width: 48px; min-height: 48px; }
+.lightbox-img { max-height: calc(100vh - 152px - 34px); max-height: calc(100svh - 152px - 34px); }
+.lightbox.has-caption .lightbox-img { max-height: calc(100vh - 152px - 34px - 94px); max-height: calc(100svh - 152px - 34px - 94px); }
+/* 圖說：固定寬度的區塊跟圖片一起水平置中，區塊內文字齊左，長圖說比較好讀 */
+/* width:0＋min-width：圖說不會把整個 figure 撐寬（figure 跟圖片一樣寬，左右兩側才都是切換區），寬度＝min(圖片寬, 720px) */
+.lightbox-caption { width: 0; min-width: min(720px, 100%); text-align: left; font-size: 15px; line-height: 26px; color: rgba(255,255,255,.78); cursor: default; }
+.lightbox-caption strong { color: #fff; font-weight: 600; margin-right: 8px; }
+/* 摺起來：最多 2 行；「…展開」浮動在第二行最後面（::before 撐出「總高 − 1 行」的空間，按鈕 clear 後落在第二行右側） */
+.lightbox-caption { --cap-lh: 26px; display: flex; }
+.lightbox-caption-text { display: block; flex: 1; min-width: 0; }
+.lightbox-caption.is-clamped .lightbox-caption-text { max-height: calc(var(--cap-lh) * 2); overflow: hidden; }
+.lightbox-caption.has-more .lightbox-caption-text::before { content: ''; float: right; height: calc(100% - var(--cap-lh)); }
+.lightbox-more { float: right; clear: both; margin-left: 10px; padding: 0; border: 0; background: none;
+  font: inherit; font-size: 14px; line-height: var(--cap-lh); letter-spacing: .06em; color: var(--p-200); cursor: pointer;
+  text-decoration: underline; text-underline-offset: 3px; }
+@media (hover: hover) { .lightbox-more:hover { color: #fff; } }
+.lightbox-more:focus-visible { outline: 2px solid var(--p-300); outline-offset: 2px; }
+.lightbox-caption[hidden] { display: none; }
+/* 張數：圖片下方；有圖說時在圖說下方 */
+.lightbox-count { margin: 0; font-size: 13px; line-height: 20px; letter-spacing: .12em; color: rgba(255,255,255,.55);
+  font-variant-numeric: tabular-nums; cursor: default; }
+.lightbox-caption:not([hidden]) + .lightbox-count { margin-top: -4px; }
+/* 目前這組的小標題：圖片上方、水平置中 */
+.lightbox-heading { margin: 0; width: 0; min-width: min(720px, 100%); text-align: center;
+  font-size: 18px; line-height: 28px; font-weight: 500; color: #fff; letter-spacing: .05em; cursor: default; }
+.lightbox-heading[hidden] { display: none; }
+/* 有小標題時，圖片再讓出標題的高度（28px 行高＋14px 間距） */
+.lightbox.has-heading .lightbox-img { max-height: calc(100vh - 152px - 34px - 42px); max-height: calc(100svh - 152px - 34px - 42px); }
+.lightbox.has-heading.has-caption .lightbox-img { max-height: calc(100vh - 152px - 34px - 94px - 42px); max-height: calc(100svh - 152px - 34px - 94px - 42px); }
+
+/* 左右切換區（桌機）：畫面左半邊＝上一張、右半邊＝下一張，整片都能點；
+   圖片、小標題、圖說、張數疊在切換區上面（點它們不會切換）；游標換成 32px 的「←」「→」 */
+.lightbox-stage { pointer-events: none; cursor: default; }
+.lightbox-figure { position: relative; z-index: 2; pointer-events: auto; cursor: default; }
+.lightbox-close { z-index: 3; }
+.lightbox-nav { position: fixed; top: 0; bottom: 0; z-index: 1; width: 50%; margin: 0; padding: 0 var(--gutter);
+  border: 0; border-radius: 0; background: none; display: flex; align-items: center; -webkit-tap-highlight-color: transparent; }
+.lightbox-prev { left: 0; justify-content: flex-start;
+  cursor: url(../assets/cursor-prev.png) 16 16, w-resize;
+  cursor: -webkit-image-set(url(../assets/cursor-prev.png) 1x, url(../assets/cursor-prev@2x.png) 2x) 16 16, w-resize;
+  cursor: image-set(url(../assets/cursor-prev.png) 1x, url(../assets/cursor-prev@2x.png) 2x) 16 16, w-resize; }
+.lightbox-next { right: 0; justify-content: flex-end;
+  cursor: url(../assets/cursor-next.png) 16 16, e-resize;
+  cursor: -webkit-image-set(url(../assets/cursor-next.png) 1x, url(../assets/cursor-next@2x.png) 2x) 16 16, e-resize;
+  cursor: image-set(url(../assets/cursor-next.png) 1x, url(../assets/cursor-next@2x.png) 2x) 16 16, e-resize; }
+.lightbox-nav:disabled { pointer-events: none; }
+.lightbox-nav:disabled .nav-dot { opacity: 0; }
+.lightbox-nav:focus-visible { outline: none; }
+.lightbox-nav:focus-visible .nav-dot { outline: 2px solid var(--p-300); outline-offset: 3px; }
+/* 桌機：只有 Icon、沒有圓形背景 */
+.nav-dot { pointer-events: none; background: none; color: rgba(255, 255, 255, .85); }
+.nav-dot .i { width: 32px !important; height: 32px !important; }
+/* 圓形圖示只是靜態提示，游標靠近或點擊都不變樣式；回饋只靠游標：
+   平常是淡色圓底「← →」，按下去的瞬間換成淡藍底（P-200），跟網站按鈕按下的節奏一致 */
+.lightbox-prev:active { cursor: url(../assets/cursor-prev-pressed.png) 16 16, w-resize;
+  cursor: -webkit-image-set(url(../assets/cursor-prev-pressed.png) 1x, url(../assets/cursor-prev-pressed@2x.png) 2x) 16 16, w-resize;
+  cursor: image-set(url(../assets/cursor-prev-pressed.png) 1x, url(../assets/cursor-prev-pressed@2x.png) 2x) 16 16, w-resize; }
+.lightbox-next:active { cursor: url(../assets/cursor-next-pressed.png) 16 16, e-resize;
+  cursor: -webkit-image-set(url(../assets/cursor-next-pressed.png) 1x, url(../assets/cursor-next-pressed@2x.png) 2x) 16 16, e-resize;
+  cursor: image-set(url(../assets/cursor-next-pressed.png) 1x, url(../assets/cursor-next-pressed@2x.png) 2x) 16 16, e-resize; }
+
+/* Loader 動畫：Tail Spin（Sam Herbert, svg-loaders, MIT License），顏色跟著 currentColor */
+.tail-spin { display: block; width: 48px; height: 48px; }
+.tail-spin .ts-rot { transform-origin: 18px 18px; animation: ts-spin .9s linear infinite; }
+@keyframes ts-spin { to { transform: rotate(360deg); } }
+/* 燈箱圖片載入中：白色 Tail Spin 在中間 */
+.lb-spinner { display: none; position: absolute; left: 50%; top: 50%; margin: -24px 0 0 -24px; color: #fff; }
+.lightbox-imgwrap.is-loading .lb-spinner { display: block; }
+.lightbox-imgwrap.is-loading .lightbox-img { opacity: 0; }
+.lightbox-imgwrap.is-loading { min-width: min(60vw, 480px); min-height: 40vh; }
+
+/* 頁面上的圖片載入中：淡藍底（P-100）＋由左往右掃過的柔光，載好後淡入 */
+.img-loading { position: relative; background: var(--p-100); }
+.zoomable.img-loading { aspect-ratio: 4 / 3; }
+.img-loading img { opacity: 0; }
+.img-loading::after { content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(100deg, rgba(255,255,255,0) 30%, rgba(255,255,255,.55) 50%, rgba(255,255,255,0) 70%);
+  background-size: 220% 100%; animation: img-shimmer 1.6s ease-in-out infinite; }
+@keyframes img-shimmer { from { background-position: 120% 0; } to { background-position: -120% 0; } }
+.img-loaded img { animation: img-in .5s ease both; }
+@keyframes img-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* 頁面 Loader：整頁淡色底，中間是主色 Tail Spin＋「載入中」 */
+.page-loader { position: fixed; inset: 0; z-index: 1000; background: var(--n-50); color: var(--p-300);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+  transition: opacity .45s ease, visibility .45s; }
+.page-loader.is-done { opacity: 0; visibility: hidden; }
+/* 網路快時 0.4 秒內頁面就畫好、Loader 直接移除，所以先延遲 0.4 秒才淡入，避免每次換頁都閃一下 */
+.page-loader:not(.is-done) { animation: pl-in .3s ease .4s both; }
+@keyframes pl-in { from { opacity: 0; } to { opacity: 1; } }
+.page-loader .tail-spin { width: 56px; height: 56px; }
+.page-loader p { font-size: 14px; letter-spacing: .2em; color: var(--n-500); }
+
+@media (prefers-reduced-motion: reduce) {
+  .img-loading::after { animation: none; }
+  .tail-spin .ts-rot { animation-duration: 2.4s; }
+}
+
+@media (max-width: 600px) {
+  .lightbox-stage { padding: 72px 0 88px; }
+  .lightbox-img { max-height: calc(100svh - 160px - 34px); }
+  .lightbox.has-caption .lightbox-img { max-height: calc(100svh - 160px - 34px - 80px); }
+  .lightbox-caption { --cap-lh: 24px; padding: 0 20px; font-size: 14px; line-height: 24px; }
+  .lightbox-heading { padding: 0 20px; font-size: 16px; line-height: 26px; }
+  .lightbox.has-heading .lightbox-img { max-height: calc(100svh - 160px - 34px - 40px); }
+  .lightbox.has-heading.has-caption .lightbox-img { max-height: calc(100svh - 160px - 34px - 80px - 40px); }
+  /* 手機：不用整片切換區，左右按鈕放在下方兩側（也可以左右滑動） */
+  .lightbox-nav { top: auto; bottom: 16px; width: auto; padding: 0; cursor: pointer; }
+  .lightbox-prev { left: 16px; } .lightbox-next { right: 16px; }
+  .nav-dot { background: rgba(250, 245, 245, .14); color: #fff; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }   /* 手機：按鈕小，保留圓形底比較好按 */
+  .lightbox-nav:active .nav-dot { background: var(--p-300); color: var(--p-950); }   /* 手機沒有游標，按下時用按鈕本身回饋 */
+}
