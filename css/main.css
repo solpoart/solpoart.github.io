@@ -1532,6 +1532,8 @@ img {
 /* === 燈箱 v2（2026-10-19）：左右切換區、小標題、圖說（超過 2 行摺疊）、張數、載入中提示、頁面 Loader ===
    寫在原本燈箱樣式之後，覆蓋舊的設定 */
 .lightbox-stage { flex-direction: column; padding: 96px calc(var(--gutter) + 72px) 56px; }
+/* 燈箱 v2 的 stage 改成直向排列，舊的長圖規則 align-items: flex-start 變成「靠左」；長圖改回水平置中、從上方開始 */
+.lightbox.is-long .lightbox-stage { align-items: center; justify-content: flex-start; }
 .lightbox-figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 14px; max-width: 100%;
   transition: opacity .14s ease; }
 .lightbox-figure.is-switching { opacity: 0; }
