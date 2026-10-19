@@ -1661,3 +1661,16 @@ img {
   .lightbox-close.is-near { background: var(--p-200); scale: 1.08; }
   .lightbox-close:active { background: var(--p-300); scale: 1; }
 }
+
+/* === 燈箱切換區的 hover 提示（2026-10-19）===
+   切換區看不到邊界，所以游標在哪一半，那一側的箭頭就亮起來、往外微移，提示「點下去會往這邊」。
+   游標在圖片、圖說或右上角關閉區上時，切換區不算 hover，箭頭維持暗色（點下去也確實不會換張） */
+@media (hover: hover) and (min-width: 601px) {
+  .nav-dot { color: rgba(255, 255, 255, .45); transition: color .2s ease, translate .25s cubic-bezier(.22,1,.36,1); }
+  .lightbox-nav:hover .nav-dot { color: #fff; }
+  .lightbox-prev:hover .nav-dot { translate: -4px 0; }
+  .lightbox-next:hover .nav-dot { translate: 4px 0; }
+}
+@media (hover: hover) and (min-width: 601px) and (prefers-reduced-motion: reduce) {
+  .lightbox-prev:hover .nav-dot, .lightbox-next:hover .nav-dot { translate: none; }
+}
