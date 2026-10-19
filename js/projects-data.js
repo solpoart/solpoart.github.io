@@ -263,6 +263,7 @@ window.SITE_PROJECTS = [
   },
   {
     id: 'marine_reserve_bookmark',
+    shrinkLong: true,   // 詳情頁的長條圖等比縮小（書籤），燈箱才看長條大圖
     title: '守護海岸 動物磁鐵書籤',
     images: 7, cover: 4,
     categories: ['設計'],

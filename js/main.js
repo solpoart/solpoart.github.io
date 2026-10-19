@@ -719,7 +719,11 @@ function markImageLoading(scope) {
   });
 }
 // 詳情頁的長條圖（高 / 寬 > 2）：頁面上等比縮小、置中，整張一眼看完；點進燈箱才用長條大圖上下捲動看細節
+// 只套用在資料裡標了 shrinkLong: true 的專案（目前只有書籤），其他專案的長圖維持頁面大圖
 function markLongImages(scope) {
+  var id = new URLSearchParams(location.search).get('id');
+  var proj = id && window.findProject && window.findProject(id);
+  if (!proj || !proj.shrinkLong) return;
   (scope || document).querySelectorAll('.detail-images .zoomable img').forEach(function (im) {
     var check = function () { if (im.naturalWidth && im.naturalHeight / im.naturalWidth > LONG_RATIO) im.parentNode.classList.add('is-long'); };
     if (im.complete && im.naturalWidth) check(); else im.addEventListener('load', check, { once: true });
