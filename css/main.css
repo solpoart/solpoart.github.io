@@ -1647,3 +1647,17 @@ img {
   .nav-dot { background: rgba(250, 245, 245, .14); color: #fff; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }   /* 手機：按鈕小，保留圓形底比較好按 */
   .lightbox-nav:active .nav-dot { background: var(--p-300); color: var(--p-950); }   /* 手機沒有游標，按下時用按鈕本身回饋 */
 }
+
+/* === 燈箱關閉按鈕的「磁鐵」（2026-10-19）===
+   右上角 150×150 的關閉區：游標變成 32px 的「×」，點區域內任何位置都會關閉；
+   游標靠近時按鈕往游標方向微微移動（js 設定 translate，最多 14px）並亮起來 */
+.lightbox-close-zone { display: none; }
+@media (hover: hover) and (min-width: 601px) {
+  .lightbox-close-zone { display: block; position: fixed; top: 0; right: 0; z-index: 3; width: 150px; height: 150px;
+    cursor: url(../assets/cursor-close.png?v=6) 16 16, pointer;
+    cursor: -webkit-image-set(url(../assets/cursor-close.png?v=6) 1x, url(../assets/cursor-close@2x.png?v=6) 2x) 16 16, pointer;
+    cursor: image-set(url(../assets/cursor-close.png?v=6) 1x, url(../assets/cursor-close@2x.png?v=6) 2x) 16 16, pointer; }
+  .lightbox-close { z-index: 4; transition: translate .18s cubic-bezier(.22, 1, .36, 1), scale var(--t) var(--ease), background var(--t), color var(--t); }
+  .lightbox-close.is-near { background: var(--p-200); scale: 1.08; }
+  .lightbox-close:active { background: var(--p-300); scale: 1; }
+}

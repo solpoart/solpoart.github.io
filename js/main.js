@@ -460,6 +460,7 @@ function initLightbox(root) {
 
   document.body.insertAdjacentHTML('beforeend',
     '<div class="lightbox" role="dialog" aria-modal="true" aria-label="圖片檢視" hidden>' +
+      '<div class="lightbox-close-zone" aria-hidden="true"></div>' +
       '<button class="btn-icon lightbox-close" type="button" aria-label="關閉圖片檢視">' + ICONS.close + '</button>' +
       '<div class="lightbox-stage">' +
         '<figure class="lightbox-figure"><p class="lightbox-heading" aria-live="polite"></p><div class="lightbox-imgwrap"><img class="lightbox-img" alt=""><span class="lb-spinner"><svg class=\'tail-spin \' viewBox=\'0 0 38 38\' aria-hidden=\'true\'><defs><linearGradient id=\'ts-lb\' x1=\'8.042%\' y1=\'0%\' x2=\'65.682%\' y2=\'23.865%\'><stop stop-color=\'currentColor\' stop-opacity=\'0\' offset=\'0%\'/><stop stop-color=\'currentColor\' stop-opacity=\'.631\' offset=\'63.146%\'/><stop stop-color=\'currentColor\' offset=\'100%\'/></linearGradient></defs><g fill=\'none\' fill-rule=\'evenodd\'><g transform=\'translate(1 1)\'><g class=\'ts-rot\'><path d=\'M36 18c0-9.94-8.06-18-18-18\' stroke=\'url(#ts-lb)\' stroke-width=\'2\'/><circle fill=\'currentColor\' cx=\'36\' cy=\'18\' r=\'1\'/></g></g></g></svg></span></div>' +
@@ -567,6 +568,7 @@ function initLightbox(root) {
     if (lb.hidden) return;
     lb.classList.remove('open');
     lockPage(false);
+    magnetReset();
     // 回到頁面上「最後看的那張圖」的位置，前後的文字都在眼前，可以接著往下讀
     var target = items[idx];
     // 燈箱淡出時（頁面還被蓋住）先瞬間移到目標附近，淡出後再慢慢捲完最後一小段
@@ -591,6 +593,24 @@ function initLightbox(root) {
 
   items.forEach(function (it, i) { it.btn.addEventListener('click', function () { open(i); }); });
   closeBtn.addEventListener('click', close);
+  // 關閉按鈕的「磁鐵」：右上角一整塊都是關閉區（游標變成 ×，點任何位置都關閉）；
+  // 游標靠近時按鈕往游標方向微微移動、放大，像被吸過去；離開後彈回原位（只在有游標的裝置）
+  var zone = lb.querySelector('.lightbox-close-zone');
+  zone.addEventListener('click', close);
+  var MAG_R = 150, MAG_MAX = 14;
+  function magnetReset() { closeBtn.style.translate = ''; closeBtn.classList.remove('is-near'); }
+  lb.addEventListener('mousemove', function (e) {
+    if (!window.matchMedia('(hover: hover)').matches) return;
+    var r = closeBtn.getBoundingClientRect();
+    var cx = r.left + r.width / 2 - (parseFloat(closeBtn.style.translate) || 0);
+    var cy = r.top + r.height / 2 - (parseFloat((closeBtn.style.translate || '0 0').split(' ')[1]) || 0);
+    var dx = e.clientX - cx, dy = e.clientY - cy, d = Math.hypot(dx, dy);
+    if (d > MAG_R) { magnetReset(); return; }
+    var pull = Math.min(1, d / 60) * MAG_MAX / Math.max(d, 1);   // 越近吸得越貼，最多 14px
+    closeBtn.style.translate = (dx * pull).toFixed(1) + 'px ' + (dy * pull).toFixed(1) + 'px';
+    closeBtn.classList.add('is-near');
+  });
+  lb.addEventListener('mouseleave', magnetReset);
   moreBtn.addEventListener('click', function (e) {
     e.stopPropagation();
     var open = capEl.classList.toggle('is-clamped') === false;
