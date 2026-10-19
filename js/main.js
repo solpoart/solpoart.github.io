@@ -605,7 +605,10 @@ function initLightbox(root) {
     var cx = r.left + r.width / 2 - (parseFloat(closeBtn.style.translate) || 0);
     var cy = r.top + r.height / 2 - (parseFloat((closeBtn.style.translate || '0 0').split(' ')[1]) || 0);
     var dx = e.clientX - cx, dy = e.clientY - cy, d = Math.hypot(dx, dy);
-    if (d > MAG_R) { magnetReset(); return; }
+    // 只在「點下去真的會關閉」的範圍內才吸：游標在關閉區或按鈕上，避免還在切頁區時按鈕就先亮起來
+    var z = zone.getBoundingClientRect();
+    var inZone = e.clientX >= z.left && e.clientX <= z.right && e.clientY >= z.top && e.clientY <= z.bottom;
+    if (!(inZone || closeBtn.contains(e.target)) || d > MAG_R) { magnetReset(); return; }
     var pull = Math.min(1, d / 60) * MAG_MAX / Math.max(d, 1);   // 越近吸得越貼，最多 14px
     closeBtn.style.translate = (dx * pull).toFixed(1) + 'px ' + (dy * pull).toFixed(1) + 'px';
     closeBtn.classList.add('is-near');
