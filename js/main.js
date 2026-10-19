@@ -223,9 +223,10 @@ function initHero() {
     // 停在大圖、標題、說明文字上都繼續輪播
     var hovering = false, offscreen = false;
     var syncPause = function () { root.classList.toggle('is-paused', hovering || offscreen); };
+    // 只認真正的滑鼠：手機點按會觸發模擬的 mouseenter、卻不會有 mouseleave，會讓輪播永遠停住
     [link, root.querySelector('.hero-controls')].forEach(function (el) {
-      el.addEventListener('mouseenter', function () { hovering = true; syncPause(); });
-      el.addEventListener('mouseleave', function () { hovering = false; syncPause(); });
+      el.addEventListener('pointerenter', function (e) { if (e.pointerType !== 'mouse') return; hovering = true; syncPause(); });
+      el.addEventListener('pointerleave', function (e) { if (e.pointerType !== 'mouse') return; hovering = false; syncPause(); });
     });
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (en) { offscreen = !en[0].isIntersecting; syncPause(); }, { threshold: 0.25 }).observe(root);
