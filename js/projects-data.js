@@ -440,8 +440,12 @@ window.SITE_PROJECTS_ALL = window.SITE_PROJECTS;
 window.SITE_PROJECTS = window.SITE_PROJECTS_ALL.filter(function (p) { return !p.hidden; });
 
 /* ---- helpers ---- */
+// 圖片重新產生過的專案，在網址加上版本號，瀏覽器才不會一直用舊的快取圖（之後哪個資料夾的圖有換，就把它加進來或改日期）
+window.IMG_VER = {
+  animal_origins_1: '20261019', animal_origins_2: '20261019', animal_origins_3: '20261019', trip_in_the_world: '20261019',
+};
 window.projectImage = function (id, n) {
-  return 'pic_projects/' + id + '/' + id + '_' + String(n).padStart(2, '0') + '.webp';
+  return 'pic_projects/' + id + '/' + id + '_' + String(n).padStart(2, '0') + '.webp' + (window.IMG_VER[id] ? '?v=' + window.IMG_VER[id] : '');
 };
 window.findProject = function (id) {
   return window.SITE_PROJECTS.find(function (p) { return p.id === id; });
