@@ -560,6 +560,9 @@ function initLightbox(root) {
     items.forEach(function (it) { var im = it.btn.querySelector('img'); if (im && im.loading === 'lazy') im.loading = 'eager'; });
     show(i);
     lb.hidden = false;
+    // 有些瀏覽器（Safari、Firefox）在燈箱隱藏時會保留上次的捲動位置，show() 裡歸零沒作用；
+    // 顯示出來之後再歸零一次，確保每次打開都從圖片最上面開始看
+    lb.scrollTop = 0;
     lockPage(true);
     requestAnimationFrame(function () { lb.classList.add('open'); });
     closeBtn.focus({ preventScroll: true });
@@ -586,7 +589,7 @@ function initLightbox(root) {
         setTimeout(once, 200);   // 最多等 200ms，等不到就照目前的版面先走
       } else go();
     }
-    setTimeout(function () { lb.hidden = true; img.removeAttribute('src'); }, 250);
+    setTimeout(function () { lb.scrollTop = 0; lb.hidden = true; img.removeAttribute('src'); }, 250);
   }
   window.closeLightbox = close;
   window.isLightboxOpen = function () { return !lb.hidden && lb.classList.contains('open'); };
