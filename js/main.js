@@ -639,6 +639,13 @@ function initLightbox(root) {
       else lb.scrollBy({ top: step, behavior: 'smooth' });
     }
   });
+  // 手機：點圖片以外的背景就關閉（手機的切換按鈕在下方，背景是空的；桌機背景是切換區，不適用）
+  // 點圖片、標題、圖說、張數或任何按鈕都不會關閉
+  lb.addEventListener('click', function (e) {
+    if (!window.matchMedia('(max-width: 600px)').matches) return;
+    if (e.target.closest('.lightbox-imgwrap, .lightbox-heading, .lightbox-caption, .lightbox-count, button')) return;
+    close();
+  });
   // 手機：左右滑動切換（垂直滑動留給長形圖捲動）
   var tx = 0, ty = 0;
   lb.addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
