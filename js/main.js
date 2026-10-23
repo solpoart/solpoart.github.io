@@ -421,8 +421,13 @@ function initHeroExpand(hero) {
     hero.style.removeProperty('--p');
     var baseW = hero.parentElement.clientWidth;
     hero.style.setProperty('--base-w', baseW + 'px');
-    hero.style.setProperty('--full-w', document.documentElement.clientWidth + 'px');
-    hero.style.setProperty('--hero-h', hero.offsetHeight + 'px');
+    var fullW = document.documentElement.clientWidth, heroH = hero.offsetHeight;
+    // 放大上限（超寬螢幕用）：最多 1920px，或比例最寬到 2.7:1（上下最多裁掉約 1/3），取比較窄的；
+    // 1920px 以下的螢幕照樣撐滿；碰不到螢幕兩側時保留圓角（--flat = 0）
+    var target = Math.max(baseW, Math.min(fullW, 1920, Math.round(heroH * 2.7)));
+    hero.style.setProperty('--full-w', target + 'px');
+    hero.style.setProperty('--flat', target >= fullW ? 1 : 0);
+    hero.style.setProperty('--hero-h', heroH + 'px');
     dist = Math.min(MAX_DIST, hero.offsetHeight / 2);
     hero.classList.add('is-expandable');
     update();

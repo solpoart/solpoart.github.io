@@ -810,7 +810,8 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
   height: var(--hero-h);
   width: calc(var(--base-w) + (var(--full-w) - var(--base-w)) * var(--p));
   margin-left: calc((var(--base-w) - var(--full-w)) / 2 * var(--p));
-  border-radius: calc(var(--radius-img) * (1 - var(--p)));
+  --flat: 1;
+  border-radius: calc(var(--radius-img) * (1 - var(--p) * var(--flat)));   /* 超寬螢幕放大停在 1920px 時 --flat = 0，保留圓角 */
 }
 .detail-body { width: min(640px, 100%); margin: 40px auto 0; }
 .detail-title {
