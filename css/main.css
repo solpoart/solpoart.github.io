@@ -833,7 +833,13 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
   content: ''; position: absolute; left: 2px; top: 10px;
   width: 5px; height: 5px; border-radius: 50%; background: var(--p-300);
 }
-.detail-images { margin-top: 40px; display: flex; flex-direction: column; gap: 40px; }
+.detail-images { margin-top: 40px; display: flex; flex-direction: column; gap: 40px;
+  /* 圖片比內文寬：內文維持 640px（一行不要太長），圖片放大到 800px，兩者都水平置中（2026-10-24）
+     寬度 = min(800px, 畫面寬 − 兩側留白)，用負的左邊距從 640 的欄位往兩側撐開 */
+  --img-w: min(800px, 100vw - var(--gutter) * 2);
+  width: var(--img-w); margin-left: calc((100% - var(--img-w)) / 2); }
+/* 圖片之間的小標題、圖說還是文字，跟內文一樣維持 640px 寬並置中 */
+.detail-images .detail-heading, .detail-images .detail-caption { width: min(640px, 100%); margin-inline: auto; }
 .detail-images img {
   width: 100%; height: auto;
   border-radius: var(--radius-img);
