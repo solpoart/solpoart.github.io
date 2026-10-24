@@ -7,8 +7,8 @@
 /* === 1. DESIGN TOKENS（對應 Figma variables）=== */
 :root {
   --n-50:  #faf5f5;
-  --bg-top:    #faf5f5;   /* 背景漸層：上 = N-50（暖白） */
-  --bg-bottom: #f0f3f4;   /* 背景漸層：下 = 偏一點點冷的灰白（2026-10-24） */
+  --bg-top:    #faf5f5;   /* 背景：畫面上緣的顏色（js initBgScroll 會依捲動進度改寫） */
+  --bg-bottom: #f7f4f5;   /* 背景：畫面下緣的顏色（預設 = 頁面頂端時的值） */
   --n-100: #e8eded;
   --n-200: #d9dcde;
   --n-300: #c3c6c7;
@@ -77,8 +77,8 @@ body {
   animation: page-fade-in .2s ease-out;
 }
 @keyframes page-fade-in { from { opacity: 0; } to { opacity: 1; } }
-/* 背景：由上到下淡淡的漸層（暖白 → 冷灰白），固定在畫面上，不隨頁面捲動拉長，
-   每一個畫面都看得到同樣的漸層（用 fixed 的偽元素，iOS 不支援 background-attachment: fixed） */
+/* 背景：固定在畫面上的一層漸層，顏色跟著捲動進度慢慢從暖白變成灰藍白（js：initBgScroll）
+   （用 fixed 的偽元素，iOS 不支援 background-attachment: fixed） */
 body::before {
   content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
   background: linear-gradient(to bottom, var(--bg-top) 0%, var(--bg-bottom) 100%);
