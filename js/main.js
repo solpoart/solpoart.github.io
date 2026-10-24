@@ -736,25 +736,29 @@ function markLongImages(scope) {
   });
 }
 /* ---- 背景：跟著捲動慢慢變色（2026-10-24）----
-   頁面最上面是淡藍，捲到中間變淡粉，最底是淺灰；不管頁面多長，從頭捲到尾都是同樣的變化量。
+   色標（頁面頂端 → 底端）：淡藍 → 淡粉 → 淺灰（Merlin 指定）；不管頁面多長，從頭捲到尾都是同樣的變化量。
    畫面裡本身也有一點上下漸層（下緣比上緣多走 20% 的進度），看起來不會是一整片死板的單色。
-   顏色寫在 CSS 變數 --bg-top / --bg-bottom（body::before 用），js 只負責依捲動進度換算 */
-// 色標（由頁面頂端到底端）：淡藍 → 淡粉 → 淺灰（2026-10-24 Merlin 指定）
+   各頁濃淡不同：首頁 = 原色；About、作品列表、Contact = 往淺灰沖淡 55%；專案詳情頁 = 單色淺灰（不跟著捲動變）
+   顏色寫在 body 的 CSS 變數 --bg-top / --bg-bottom（body::before 用），css 先放好各頁的初始值，js 只負責依捲動進度換算 */
 var BG_STOPS = [[194, 225, 247], [248, 224, 223], [244, 244, 244]];   // #C2E1F7 → #F8E0DF → #F4F4F4
-function bgMix(t) {
+var BG_FADE = { home: 0, about: .55, projects: .55, contact: .55 };    // 沖淡比例（往 BG_PALE 靠近）；沒列出的頁面 = 單色
+var BG_PALE = [248, 248, 248];
+function bgMix(t, fade) {
   t = Math.max(0, Math.min(1, t));
   var seg = t * (BG_STOPS.length - 1), i = Math.min(Math.floor(seg), BG_STOPS.length - 2), k = seg - i;
   var a = BG_STOPS[i], b = BG_STOPS[i + 1];
-  return 'rgb(' + a.map(function (c, j) { return Math.round(c + (b[j] - c) * k); }).join(',') + ')';
+  return 'rgb(' + a.map(function (c, j) { var v = c + (b[j] - c) * k; return Math.round(v + (BG_PALE[j] - v) * fade); }).join(',') + ')';
 }
 function initBgScroll() {
-  var root = document.documentElement, ticking = false;
+  var body = document.body, page = body.getAttribute('data-page');
+  if (!(page in BG_FADE)) return;   // 單色頁（專案詳情頁）：用 css 的固定顏色
+  var fade = BG_FADE[page], root = document.documentElement, ticking = false;
   function update() {
     ticking = false;
     var max = root.scrollHeight - window.innerHeight;
     var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
-    root.style.setProperty('--bg-top', bgMix(p * .8));
-    root.style.setProperty('--bg-bottom', bgMix(.2 + p * .8));
+    body.style.setProperty('--bg-top', bgMix(p * .8, fade));
+    body.style.setProperty('--bg-bottom', bgMix(.2 + p * .8, fade));
   }
   window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
   window.addEventListener('resize', update);
