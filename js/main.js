@@ -736,13 +736,16 @@ function markLongImages(scope) {
   });
 }
 /* ---- 背景：跟著捲動慢慢變色（2026-10-24）----
-   頁面最上面是暖白（N-50），越往下捲越偏冷一點的灰藍白；不管頁面多長，從頭捲到尾都是同樣的變化量。
+   頁面最上面是淡藍，捲到中間變淡粉，最底是淺灰；不管頁面多長，從頭捲到尾都是同樣的變化量。
    畫面裡本身也有一點上下漸層（下緣比上緣多走 20% 的進度），看起來不會是一整片死板的單色。
    顏色寫在 CSS 變數 --bg-top / --bg-bottom（body::before 用），js 只負責依捲動進度換算 */
-var BG_FROM = [250, 245, 245], BG_TO = [233, 240, 243];   // #faf5f5 → #e9f0f3
+// 色標（由頁面頂端到底端）：淡藍 → 淡粉 → 淺灰（2026-10-24 Merlin 指定）
+var BG_STOPS = [[194, 225, 247], [248, 224, 223], [244, 244, 244]];   // #C2E1F7 → #F8E0DF → #F4F4F4
 function bgMix(t) {
   t = Math.max(0, Math.min(1, t));
-  return 'rgb(' + BG_FROM.map(function (c, i) { return Math.round(c + (BG_TO[i] - c) * t); }).join(',') + ')';
+  var seg = t * (BG_STOPS.length - 1), i = Math.min(Math.floor(seg), BG_STOPS.length - 2), k = seg - i;
+  var a = BG_STOPS[i], b = BG_STOPS[i + 1];
+  return 'rgb(' + a.map(function (c, j) { return Math.round(c + (b[j] - c) * k); }).join(',') + ')';
 }
 function initBgScroll() {
   var root = document.documentElement, ticking = false;
