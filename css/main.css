@@ -7,6 +7,8 @@
 /* === 1. DESIGN TOKENS（對應 Figma variables）=== */
 :root {
   --n-50:  #faf5f5;
+  --bg-top:    #faf5f5;   /* 背景漸層：上 = N-50（暖白） */
+  --bg-bottom: #f0f3f4;   /* 背景漸層：下 = 偏一點點冷的灰白（2026-10-24） */
   --n-100: #e8eded;
   --n-200: #d9dcde;
   --n-300: #c3c6c7;
@@ -68,13 +70,19 @@ body {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
   color: var(--n-950);
-  background: var(--n-50);
+  background: transparent;   /* 背景改由下面的 body::before 畫漸層 */
   overflow-x: hidden;
   overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   animation: page-fade-in .2s ease-out;
 }
 @keyframes page-fade-in { from { opacity: 0; } to { opacity: 1; } }
+/* 背景：由上到下淡淡的漸層（暖白 → 冷灰白），固定在畫面上，不隨頁面捲動拉長，
+   每一個畫面都看得到同樣的漸層（用 fixed 的偽元素，iOS 不支援 background-attachment: fixed） */
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(to bottom, var(--bg-top) 0%, var(--bg-bottom) 100%);
+}
 img { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 ul { list-style: none; }
@@ -833,7 +841,13 @@ body.header-hidden .btn-back.is-fixed { top: var(--header-top); }
   content: ''; position: absolute; left: 2px; top: 10px;
   width: 5px; height: 5px; border-radius: 50%; background: var(--p-300);
 }
-.detail-images { margin-top: 40px; display: flex; flex-direction: column; gap: 40px; }
+.detail-images { margin-top: 40px; display: flex; flex-direction: column; gap: 40px;
+  /* 圖片比內文寬：內文維持 640px（一行不要太長），圖片放大到 800px，兩者都水平置中（2026-10-24）
+     寬度 = min(800px, 畫面寬 − 兩側留白)，用負的左邊距從 640 的欄位往兩側撐開 */
+  --img-w: min(800px, 100vw - var(--gutter) * 2);
+  width: var(--img-w); margin-left: calc((100% - var(--img-w)) / 2); }
+/* 圖片之間的小標題、圖說還是文字，跟內文一樣維持 640px 寬並置中 */
+.detail-images .detail-heading, .detail-images .detail-caption { width: min(640px, 100%); margin-inline: auto; }
 .detail-images img {
   width: 100%; height: auto;
   border-radius: var(--radius-img);
@@ -1406,17 +1420,20 @@ img {
 .hero--below { --hb-fs: 20px; --hb-lh: 32px; }
 /* 圖片高度比原本矮 72px，讓第一個畫面就看得到下方的 Show Detail */
 @media (min-width: 601px) { .hero--below .hero-viewport { height: clamp(464px, calc(47.92vw - 96px), 824px); } }
-/* 圖片底部淡成背景色（N-50），消除圖片與下方說明之間的硬邊；多段色標模擬 ease 曲線，避免色帶 */
-.hero--below .hero-viewport::after {
-  content: ''; position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
-  height: 140px; pointer-events: none;
-  background: linear-gradient(to bottom,
-    rgba(250, 245, 245, 0) 0%, rgba(250, 245, 245, .03) 10%, rgba(250, 245, 245, .1) 20%,
-    rgba(250, 245, 245, .22) 30%, rgba(250, 245, 245, .37) 40%, rgba(250, 245, 245, .53) 50%,
-    rgba(250, 245, 245, .68) 60%, rgba(250, 245, 245, .81) 70%, rgba(250, 245, 245, .91) 80%,
-    rgba(250, 245, 245, .97) 90%, var(--n-50) 100%);
+/* 圖片底部淡出，消除圖片與下方說明之間的硬邊；多段色標模擬 ease 曲線，避免色帶。
+   背景改成漸層後（2026-10-24），不能再疊一層「N-50 色塊」，改用 mask 讓圖片本身變透明，透出底下的背景 */
+.hero--below .hero-viewport {
+  --fade-h: 140px;
+  -webkit-mask-image: linear-gradient(to top, transparent 0, rgba(0,0,0,.03) calc(var(--fade-h) * .1), rgba(0,0,0,.09) calc(var(--fade-h) * .2),
+    rgba(0,0,0,.19) calc(var(--fade-h) * .3), rgba(0,0,0,.32) calc(var(--fade-h) * .4), rgba(0,0,0,.47) calc(var(--fade-h) * .5),
+    rgba(0,0,0,.63) calc(var(--fade-h) * .6), rgba(0,0,0,.78) calc(var(--fade-h) * .7), rgba(0,0,0,.9) calc(var(--fade-h) * .8),
+    rgba(0,0,0,.97) calc(var(--fade-h) * .9), #000 var(--fade-h));
+          mask-image: linear-gradient(to top, transparent 0, rgba(0,0,0,.03) calc(var(--fade-h) * .1), rgba(0,0,0,.09) calc(var(--fade-h) * .2),
+    rgba(0,0,0,.19) calc(var(--fade-h) * .3), rgba(0,0,0,.32) calc(var(--fade-h) * .4), rgba(0,0,0,.47) calc(var(--fade-h) * .5),
+    rgba(0,0,0,.63) calc(var(--fade-h) * .6), rgba(0,0,0,.78) calc(var(--fade-h) * .7), rgba(0,0,0,.9) calc(var(--fade-h) * .8),
+    rgba(0,0,0,.97) calc(var(--fade-h) * .9), #000 var(--fade-h));
 }
-@media (max-width: 600px) { .hero--below .hero-viewport::after { height: 96px; } }
+@media (max-width: 600px) { .hero--below .hero-viewport { --fade-h: 96px; } }
 .hero--below .hero-card-title { font-size: var(--hb-fs); line-height: var(--hb-lh); }
 .hero--below .hero-card-desc {
   color: var(--n-600);
