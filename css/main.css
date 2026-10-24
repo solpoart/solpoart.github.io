@@ -7,8 +7,8 @@
 /* === 1. DESIGN TOKENS（對應 Figma variables）=== */
 :root {
   --n-50:  #faf5f5;
-  --bg-top:    #c2e1f7;   /* 背景：畫面上緣的顏色（js initBgScroll 會依捲動進度改寫） */
-  --bg-bottom: #d8e1ed;   /* 背景：畫面下緣的顏色（預設 = 頁面頂端時的值） */
+  --bg-top:    #e0eef8;   /* 背景：畫面上緣的顏色（js initBgScroll 會依捲動進度改寫） */
+  --bg-bottom: #e9edf3;   /* 背景：畫面下緣的顏色（預設 = 頁面頂端時的值） */
   --n-100: #e8eded;
   --n-200: #d9dcde;
   --n-300: #c3c6c7;
@@ -92,8 +92,7 @@ body {
 @keyframes page-fade-in { from { opacity: 0; } to { opacity: 1; } }
 /* 背景：固定在畫面上的一層漸層，顏色跟著捲動進度慢慢從淡藍 → 淡粉 → 淺灰（js：initBgScroll）
    （用 fixed 的偽元素，iOS 不支援 background-attachment: fixed） */
-/* 各頁背景的初始值（js 載入前就要對，避免先閃一下別的顏色）：首頁原色、About／作品列表／Contact 沖淡、詳情頁單色 */
-body[data-page="about"], body[data-page="projects"], body[data-page="contact"] { --bg-top: #e0eef8; --bg-bottom: #e9edf3; }
+/* 各頁背景的初始值（js 載入前就要對，避免先閃一下別的顏色）：預設值 = 首頁／About／列表／Contact 的頁頂；詳情頁單色 */
 body[data-page="project"] { --bg-top: #f4f4f4; --bg-bottom: #f4f4f4; }
 body::before {
   content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
